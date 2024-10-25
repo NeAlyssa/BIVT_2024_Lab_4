@@ -1,24 +1,130 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 public class Program
 {
+    
+    public static double IncreaseByTwo(double value) {
+        return (value >= 0) ? value * 2 : value / 2;
+    }
+
+    public static (int, double) MaxRowValue(int[,] matrix, int rowIndex) {
+        double maxValue = double.MinValue;
+        int maxIndex = 0;
+
+        for (int j = 0; j < matrix.GetLength(1); j++) {
+            int curValue = matrix[rowIndex, j];
+
+            if (curValue > maxValue) {
+                maxValue = curValue;
+                maxIndex = j;
+            }
+        }
+
+        return (maxIndex, maxValue);
+    }
+
+    public static (int, double) MaxRowValue(double[,] matrix, int rowIndex) {
+        double maxValue = double.MinValue;
+        int maxIndex = 0;
+
+        for (int j = 0; j < matrix.GetLength(1); j++) {
+            double curValue = matrix[rowIndex, j];
+
+            if (curValue > maxValue) {
+                maxValue = curValue;
+                maxIndex = j;
+            }
+        }
+
+        return (maxIndex, maxValue);
+    }
+
+    public static (int, double) MinRowValue(int[,] matrix, int rowIndex, bool absValue = false) {
+        double minValue = double.MaxValue;
+        int minIndex = 0;
+
+
+        for (int j = 0; j < matrix.GetLength(1); j++) {
+            int curValue = matrix[rowIndex, j];
+
+            if (absValue)
+                curValue = Math.Abs(curValue);
+
+            if (curValue < minValue) {
+                minValue = curValue;
+                minIndex = j;
+            }
+        }
+
+        return (minIndex, minValue);
+    }
+
+    public static (int, double) MaxColumnValue(int[,] matrix, int colIndex) {
+        double maxValue = double.MinValue;
+        int maxIndex = 0;
+
+        for (int i = 0; i < matrix.GetLength(0); i++) {
+            int curValue = matrix[i, colIndex];
+
+            if (curValue > maxValue) {
+                maxValue = curValue;
+                maxIndex = i;
+            }
+        }
+
+        return (maxIndex, maxValue);
+    }
+
+    public static (int, double) MaxColumnValue(double[,] matrix, int colIndex) {
+        double maxValue = double.MinValue;
+        int maxIndex = 0;
+
+        for (int i = 0; i < matrix.GetLength(0); i++) {
+            double curValue = matrix[i, colIndex];
+
+            if (curValue > maxValue) {
+                maxValue = curValue;
+                maxIndex = i;
+            }
+        }
+
+        return (maxIndex, maxValue);
+    }
+    public static (int, double) MinColumnValue(int[,] matrix, int colIndex) {
+        double minValue = double.MaxValue;
+        int minIndex = 0;
+
+        for (int i = 0; i < matrix.GetLength(0); i++) {
+            int curValue = matrix[i, colIndex];
+
+            if (curValue < minValue) {
+                minValue = curValue;
+                minIndex = i;
+            }
+        }
+
+        return (minIndex, minValue);
+    }
+
     public static void Main()
     {
         Program program = new Program();
-
     }
     #region Level 1
     public int Task_1_1(int[,] A)
     {
         int answer = 0;
         // code here
-
+        
         // end
 
         return answer;
@@ -27,7 +133,24 @@ public class Program
     {
         double answer = 0;
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7)
+            return 0;
 
+        double sum = 0;
+        int n = 0;
+
+        for (int i = 0; i < 5; i++) {
+
+            for (int j = 0; j < 7; j++) {
+                int curElement = A[i, j];
+                
+                if (curElement > 0) {
+                    sum += curElement;
+                    n++;
+                }
+            }
+        }
+        answer = sum / n;
         // end
 
         return answer;
@@ -54,6 +177,17 @@ public class Program
     {
         int value = 0, rowIndex = -1;
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 4) 
+            return (0, 0);
+
+        for (int row = 0; row < 5; row++) {
+            int curValue = A[row, colIndex];
+            if (curValue < 0) {
+                rowIndex = row;
+                value = curValue;
+                break;
+            }
+        }
 
         // end
 
@@ -81,6 +215,29 @@ public class Program
     {
         double[] answer = default(double[]);
         // code here
+        if (A.GetLength(0) != 4 || A.GetLength(1) != 6) 
+            return null;
+
+
+        answer = new double[4];
+
+        for (int i = 0; i < 4; i++) {
+            
+            double sum = 0, curAverage = 0;
+            int n = 0;
+            for (int j = 0; j < 6; j++) {
+                int curValue = A[i, j];
+                if (curValue > 0) {
+                    sum += curValue;
+                    n++;
+                }
+            }
+
+            if (n != 0)
+                curAverage = sum / n;
+
+            answer[i] = curAverage;
+        }
 
         // end
 
@@ -105,10 +262,26 @@ public class Program
     public int[,] Task_1_11(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7) 
+            return null;
 
+        var (minRowIndex, minValue) = MinColumnValue(A, 0); 
+
+        int[,] answer = new int[4, 7];
+
+        for (int i = 0; i < 4; i++) {
+            
+            for (int j = 0; j < 7; j++) {
+
+                if (i < minRowIndex) 
+                    answer[i, j] = A[i, j];
+                else
+                    answer[i, j] = A[i + 1, j]; 
+            }
+        }
         // end
 
-        return A;
+        return answer;
     }
     public int[,] Task_1_12(int[,] A)
     {
@@ -130,6 +303,22 @@ public class Program
     {
         int[] answer = default(int[]);
         // code here
+        if (A.GetLength(0) != 4 || A.GetLength(1) != 3) 
+            return null;
+
+        answer = new int[3];
+
+        for (int j = 0; j < 3; j++) {
+            
+            int negativeCount = 0;
+
+            for (int i = 0; i < 4; i++) {
+                if (A[i, j] < 0)
+                    negativeCount++;
+            }
+
+            answer[j] = negativeCount;
+        }
 
         // end
 
@@ -155,6 +344,13 @@ public class Program
     {
         // code here
 
+        for (int i = 0; i < n; i++) {
+            var (minIndex, minValue) = MinRowValue(B, i);
+
+            for (int k = minIndex; k > 0; k--) 
+                (B[i, k], B[i, k - 1]) = (B[i, k - 1], B[i, k]);
+            
+        }
         // end
 
         return B;
@@ -178,7 +374,27 @@ public class Program
     public double[,] Task_1_20(double[,] F, int n, int m)
     {
         // code here
+        for (int i = 0; i < n; i++) {
+            
+            double firstNegativeValue = 0, lastNegativeValue = 0;
 
+            for (int j = 0; j < m; j++) {
+
+                double curValue = F[i, j];
+
+                if (curValue < 0) {
+                    if (firstNegativeValue == 0)
+                        firstNegativeValue = curValue;
+
+                    lastNegativeValue = curValue;
+                }
+            }
+            
+            var (maxIndex, maxValue) = MaxRowValue(F, i);
+
+            if (firstNegativeValue != 0)
+                F[i, maxIndex] = (firstNegativeValue + lastNegativeValue) / 2;
+        }
         // end
 
         return F;
@@ -202,7 +418,18 @@ public class Program
     public int[,] Task_1_23(int[,] G)
     {
         // code here
+        if (G.GetLength(0) != 5 || G.GetLength(1) != 7)
+            return null;
 
+        for (int i = 0; i < 5; i++) {
+            var (maxIndex, maxValue) = MaxRowValue(G, i);
+
+            for (int j = 6; j > maxIndex + 1; j--) {
+                (G[i, j], G[i, j - 1]) = (G[i, j - 1], G[i, j]);
+            }
+            
+            G[i, maxIndex + 1] = (int) maxValue;
+        }
         // end
 
         return G;
@@ -226,9 +453,15 @@ public class Program
     public int[,] Task_1_26(int[,] A, int[] B)
     {
         // code here
-
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7 || B.Length != 7)
+            return null;
         // end
 
+        var (maxIndex, maxValue) = MaxColumnValue(A, 5);
+
+        for (int j = 0; j < 7; j++) {
+            A[maxIndex, j] = B[j];
+        }
         return A;
     }
     public int[,] Task_1_27(int[,] B)
@@ -250,10 +483,30 @@ public class Program
     public int[,] Task_1_29(int[,] F)
     {
         // code here
+        if (F.GetLength(0) != 5 || F.GetLength(1) != 7)
+            return null;
+
+        var (minIndex, minValue) = MinRowValue(F, 1, true);
+        
+        minIndex += 1;
+        
+        int[,] modifiedArr = new int[5, 6];
+
+        for (int i = 0; i < 5; i++) {
+
+            for (int j = 0; j < 6; j++) {
+
+                if (j < minIndex) 
+                    modifiedArr[i, j] = F[i, j];
+                else
+                    modifiedArr[i, j] = F[i, j + 1];
+
+            }
+        }
 
         // end
 
-        return F;
+        return modifiedArr;
     }
     public int[,] Task_1_30(int[,] B)
     {
@@ -274,7 +527,30 @@ public class Program
     public double[,] Task_1_32(double[,] A)
     {
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7)
+            return null;
 
+        for (int i = 0; i < 5; i++) {
+
+            var (maxIndex, maxValue) = MaxRowValue(A, i);
+
+            double positiveSum = 0, average = 0;
+            int n = 0;
+
+            for (int j = 0; j < 7; j++) {
+                double curValue = A[i, j];
+
+                if (curValue > 0) {
+                    positiveSum += curValue;
+                    n++;
+                }
+            }
+
+            if (n != 0)
+                average = positiveSum / n;
+
+            A[i, maxIndex] = average;
+        }
         // end
 
         return A;
@@ -294,7 +570,21 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7)
+            return null;
 
+        for (int i = 0; i < 5; i++) {
+            var (maxIndex, maxValue) = MaxRowValue(A, i);
+
+            if (maxIndex == 0)
+                A[i, 1] = IncreaseByTwo(A[i, 1]);
+            else if (maxIndex == 4)
+                A[i, 3] = IncreaseByTwo(A[i, 3]);
+            else if (A[i, maxIndex - 1] < A[i, maxIndex + 1])
+                A[i, maxIndex - 1] = IncreaseByTwo(A[i, maxIndex - 1]);
+            else    
+                A[i, maxIndex + 1] = IncreaseByTwo(A[i, maxIndex + 1]);
+        }
         // end
 
         return A;
@@ -303,7 +593,27 @@ public class Program
     public int[,] Task_2_2(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5)
+            return null;
 
+        for (int j = 0; j < 5; j++) {
+            int negativeCount = 0, positiveCount = 0;
+
+            var (maxIndex, maxValue) = MaxColumnValue(A, j);
+
+            for (int i = 0; i < 7; i++) {
+                if (A[i, j] > 0)
+                    positiveCount++;
+                else
+                    negativeCount++;
+            }
+
+            if (positiveCount > negativeCount)
+                A[maxIndex, j] = 0;
+            else    
+                A[maxIndex, j] = maxIndex;
+
+        }
         // end
 
         return A;
@@ -311,7 +621,23 @@ public class Program
     public int[,] Task_2_3(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 10 || A.GetLength(1) != 5)
+            return null;
 
+        for (int j = 0; j < 5; j++) {
+            
+            var (maxIndex, maxValue) = MaxColumnValue(A, j);
+
+            if (maxIndex < 5) {
+                int afterMaxSum = 0;
+                for (int i = maxIndex + 1; i < 10; i++) {
+                    afterMaxSum += A[i, j];
+                }   
+
+                A[0, j] = afterMaxSum;
+            }
+
+        }
         // end
 
         return A;
@@ -319,7 +645,16 @@ public class Program
     public int[,] Task_2_4(int[,] A, int[] B)
     {
         // code here
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5 || B.Length != 5)
+            return null;
 
+        for (int j = 0; j < 5; j++) {
+
+            var (maxIndex, maxValue) = MaxColumnValue(A, j);
+
+            if (B[j] > maxValue)
+                A[maxIndex, j] = B[j];  
+        }
         // end
 
         return A;
@@ -327,7 +662,20 @@ public class Program
     public double[,] Task_2_5(double[,] A)
     {
         // code here
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5)
+            return null;
 
+        for (int j = 0; j < 5; j++) {
+
+            var (maxIndex, maxValue) = MaxColumnValue(A, j);
+
+            double halfSum = (A[0, j] + A[6, j]) / 2;
+
+            if (maxValue < halfSum) 
+                A[maxIndex, j] = halfSum;
+            else
+                A[maxIndex, j] = maxIndex;
+        }
         // end
 
         return A;
@@ -336,7 +684,21 @@ public class Program
     {
         int[,] answer = default(int[,]);
         // code here
+        if (n < 0)
+            return null;
 
+        answer = new int[n, 3 * n];
+        
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < 3 * n; j++) {
+
+                if (i == j % 3)
+                    answer[i, j] = 1;
+                else
+                    answer[i, j] = 0;
+            }
+        }
         // end
 
         return answer;
@@ -344,7 +706,26 @@ public class Program
     public int[,] Task_2_7(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 6 || A.GetLength(1) != 6)
+            return null;
 
+
+        int maxValue = int.MinValue; 
+        int maxIndex = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (A[i, i] > maxValue) {
+                maxValue = A[i, i];
+                maxIndex = i;
+            }
+        }
+
+        for (int i = 0; i < maxIndex; i++) {
+
+            for (int j = i + 1; j < 6; j++) {
+                A[i, j] = 0;
+            }
+        }
         // end
 
         return A;
@@ -352,7 +733,15 @@ public class Program
     public int[,] Task_2_8(int[,] B)
     {
         // code here
+        if (B.GetLength(0) != 6 || B.GetLength(1) != 6)
+            return null;
 
+        for (int i = 0; i < 3; i++) {
+            var (maxIndex1, maxValue1) = MaxRowValue(B, i * 2);
+            var (maxIndex2, maxValue2) = MaxRowValue(B, i * 2 + 1);
+
+            (B[i * 2, maxIndex1], B[i * 2 + 1, maxIndex2]) = (B[i * 2 + 1, maxIndex2], B[i * 2, maxIndex1]);
+        }
         // end
 
         return B;
@@ -360,7 +749,21 @@ public class Program
     public int[,] Task_2_9(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 6 || A.GetLength(1) != 7)
+            return null;
 
+        for (int i = 0; i < 6; i++) {
+
+            int l = 0, r = 6;
+
+            while (l < r) {
+                (A[i, l], A[i, r]) = (A[i, r], A[i, l]);
+                l++;
+                r--;
+            }
+
+
+        }
         // end
 
         return A;

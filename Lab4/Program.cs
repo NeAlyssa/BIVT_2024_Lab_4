@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
@@ -16,12 +18,15 @@ public class Program
         return (value >= 0) ? value * 2 : value / 2;
     }
 
-    public static (int, double) MaxRowValue(int[,] matrix, int rowIndex) {
+    public static (int, double) MaxRowValue(int[,] matrix, int rowIndex, bool absValue = false) {
         double maxValue = double.MinValue;
         int maxIndex = 0;
 
         for (int j = 0; j < matrix.GetLength(1); j++) {
             int curValue = matrix[rowIndex, j];
+
+            if (absValue)
+                curValue = Math.Abs(curValue);
 
             if (curValue > maxValue) {
                 maxValue = curValue;
@@ -118,7 +123,13 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
+            int[] A = { 1, 2, 3, 4, 5, 6 };
+            int[] B = { 10, 11, 12, 13, 14, 15 };
+
+            program.Task_3_7(A, B, 3);
     }
+            
+    
     #region Level 1
     public int Task_1_1(int[,] A)
     {
@@ -773,7 +784,29 @@ public class Program
     public int[,] Task_3_1(int[,] matrix)
     {
         // code here
+        if (matrix.GetLength(0) != 7 || matrix.GetLength(1) != 5)
+            return null;
+        
 
+        for (int i = 0; i < 6; i++) {
+            int curMaxValue = int.MinValue;
+            int curMaxIndex = -1;
+
+            for (int k = i; k < 7; k++) {
+                var (minIndex, minValue) = MinRowValue(matrix, k);
+
+                if (minValue > curMaxValue) {
+                    curMaxValue = (int) minValue;
+                    curMaxIndex = k;
+                }
+            }
+
+            if (curMaxIndex != i) {
+                for (int j = 0; j < 5; j++) {
+                    (matrix[i, j], matrix[curMaxIndex, j]) = (matrix[curMaxIndex, j], matrix[i, j]);
+                }
+            }
+        }
         // end
 
         return matrix;
@@ -790,6 +823,27 @@ public class Program
     {
         int[] answer = default(int[]);
         // code here
+        int n = matrix.GetLength(0);
+        if (n != matrix.GetLength(1))
+            return null;
+
+        answer = new int[2 * n - 1];
+
+        for (int i = 0; i < 2 * n - 1; i++) {
+            int curDiagonalSum = 0;
+
+            if (i < n) {
+                for (int diagI = n - i - 1, diagJ = 0; diagI < n; diagI++, diagJ++) {
+                    curDiagonalSum += matrix[diagI, diagJ];
+                }
+            } else {
+                for (int diagI = 0, diagJ = i - n + 1; diagJ < n; diagI++, diagJ++) {
+                    curDiagonalSum += matrix[diagI, diagJ];
+                }
+            }
+            answer[i] = curDiagonalSum;
+        }
+
 
         // end
 
@@ -806,8 +860,52 @@ public class Program
     public int[,] Task_3_5(int[,] matrix, int k)
     {
         // code here
+        k -= 1;
+        int n = matrix.GetLength(0);
 
+        if (n != matrix.GetLength(1) || k < 0 || k >= n)
+            return null;
+
+        int maxValue = 0, maxI = 0, maxJ = 0;
+
+        for (int i = 0; i < n; i++) {
+            var (rowMaxIndex, rowMaxValue) = MaxRowValue(matrix, i, true);
+
+            if (rowMaxValue > maxValue) {
+                maxValue = (int) rowMaxValue;
+                maxI = i;
+                maxJ = rowMaxIndex;
+            }
+        }
+
+
+        int rowIncrOrDecr = (maxI < k) ? 1 : -1;
+
+        for (int i = maxI; i != k; i += rowIncrOrDecr) {
+
+            for (int j = 0; j < n; j++) {
+                (matrix[i, j], matrix[i + rowIncrOrDecr, j]) =  (matrix[i + rowIncrOrDecr, j], matrix[i, j]);
+            }
+        }
+
+
+
+        int colIncrOrDecr = (maxJ < k) ? 1 : -1;
+
+        for (int j = maxJ; j != k; j += colIncrOrDecr) {
+
+            for (int i = 0; i < n; i++) {
+                (matrix[i, j], matrix[i, j + colIncrOrDecr]) =  (matrix[i, j + colIncrOrDecr], matrix[i, j]);
+            }
+        }
         // end
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
 
         return matrix;
     }
@@ -826,8 +924,79 @@ public class Program
         int[] answer = default(int[]);
 
         // code here
+        if (n != (-1 + Math.Sqrt(1 + 8 * A.Length)) / 2 || A.Length != B.Length)
+            return null;
 
+        answer = new int[n * n];
+
+        int[,] matrixA = new int[n, n];
+        int[,] matrixB = new int[n, n];
+        
+        for (int i = 0, k = 0; i < n; i++) {
+
+            for (int j = i; j < n; j++) {
+                matrixA[i, j] = A[k];
+                matrixA[j, i] = matrixA[i, j];
+
+                matrixB[i, j] = B[k];
+                matrixB[j, i] = matrixB[i, j];
+
+                k++;
+            }
+
+        }
         // end
+
+
+        int[,] matrixProduct = new int[n, n];
+
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < n; j++) {
+                int curSum = 0;
+
+                for (int r = 0; r < n; r++) {
+                    curSum += matrixA[i, r] * matrixB[r, j];
+                }
+
+                matrixProduct[i, j] = curSum;
+            }
+        }
+
+        Console.WriteLine("Matrix A:");
+        for (int i = 0; i < n; i++) {
+            
+            for (int j = 0; j < n; j++) {
+                Console.Write(matrixA[i, j] + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        Console.WriteLine("\nMatrix B:");
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < n; j++) {
+                Console.Write(matrixB[i, j] + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        
+        Console.WriteLine("\nMatrix A x B:");
+        for (int i = 0, k = 0; i < n; i++) {
+
+            for (int j = 0; j < n; j++) {
+                int curEl = matrixProduct[i, j];
+                Console.Write(curEl + " ");
+                answer[k] = curEl;
+                k++;
+            }
+
+            Console.WriteLine();
+        }
+
 
         return answer;
     }

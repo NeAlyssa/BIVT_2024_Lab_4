@@ -120,13 +120,32 @@ public class Program
         return (minIndex, minValue);
     }
 
+
+    public static int ColumnNegativeCount(int[,] matrix, int colIndex) {
+        
+        int negativeCount = 0;
+
+        for (int i = 0; i < matrix.GetLength(0); i++) {
+            if (matrix[i, colIndex] < 0)
+                negativeCount++;
+        }
+
+        return negativeCount;
+    }
+    
     public static void Main()
     {
         Program program = new Program();
-            int[] A = { 1, 2, 3, 4, 5, 6 };
-            int[] B = { 10, 11, 12, 13, 14, 15 };
+            int[,] matrix = {
+                { 1,    2,      -3,     7,      -5,     7,      7 },
+                { 5,    6,      -7,     8,      9,      9,      -11 },
+                { 9,    10,     11,     12,     13,     15,     15 },
+                { -13,  0,      25,     25,     16,     0,      -19 },
+                { -6,   -5,     -1,     -2,     -3,     -4,     0 }
+            };
 
-            program.Task_3_7(A, B, 3);
+            program.Task_3_11(matrix);
+
     }
             
     
@@ -1011,8 +1030,46 @@ public class Program
     public int[,] Task_3_9(int[,] matrix)
     {
         // code here
+        if (matrix.GetLength(0) != 5 || matrix.GetLength(1) != 7)
+            return null;
 
+
+        for (int j = 1; j < 7; j++) {
+            
+            int curColNegativeCount = ColumnNegativeCount(matrix, j);
+
+            int[] curCol = new int[7];
+            for (int row = 0; row < 5; row++) {
+                curCol[row] = matrix[row, j];
+            }
+
+            int jInsert = j - 1;
+
+            while (jInsert >= 0 && ColumnNegativeCount(matrix, jInsert) > curColNegativeCount) {
+                
+                
+                for (int row = 0; row < 5; row++) {
+                    matrix[row, jInsert + 1] = matrix[row, jInsert];
+                }
+
+                jInsert--;
+            }
+
+            for (int row = 0; row < 5; row++) {
+                matrix[row, jInsert + 1] = curCol[row];
+            }
+
+        }
         // end
+
+        for (int i = 0; i < 5; i++) {
+            
+            for (int j = 0; j < 7; j++) {
+                Console.Write(matrix[i, j] + " ");
+            }
+
+            Console.WriteLine();
+        }
 
         return matrix;
     }
@@ -1028,9 +1085,50 @@ public class Program
     {
         // code here
 
+        int rowsNum = matrix.GetLength(0), colsNum = matrix.GetLength(1);
+        int nonZeroRowsCount = rowsNum;
+
+        for (int i = 0; i < rowsNum; i++) {
+
+            for (int j = 0; j < colsNum; j++) {
+                if (matrix[i, j] == 0) {
+                    nonZeroRowsCount--;
+                    break;
+                }
+            }
+        }
+        
+        int[] nonZeroRowsIndexes = new int[nonZeroRowsCount];
+        int k = 0;
+
+        for (int i = 0; i < rowsNum; i++) {
+
+            bool zeroNotFound = true;
+
+            for (int j = 0; j < colsNum; j++) {
+                if (matrix[i, j] == 0) {
+                    zeroNotFound = false;
+                    break;
+                }
+            }
+
+            if (zeroNotFound) {
+                nonZeroRowsIndexes[k] = i;
+                k++;
+            }
+        }
+
+        int[,] resultMatrix = new int[nonZeroRowsCount, colsNum];
+
+        for (int i = 0; i < nonZeroRowsCount; i++) {
+
+            for (int j = 0; j < colsNum; j++) {
+                resultMatrix[i, j] = matrix[nonZeroRowsIndexes[i], j];
+            }
+        }
         // end
 
-        return matrix;
+        return resultMatrix;
     }
     #endregion
 }

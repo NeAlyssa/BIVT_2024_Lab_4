@@ -131,8 +131,8 @@ public class Program
         }
         int mx = int.MinValue, row = 0,temp;
         for (int i = 0;i < 5;i++){
-            if (mx < A[i,3]){
-                mx = A[i,3];
+            if (mx < A[i,2]){
+                mx = A[i,2];
                 row = i;
             }
         }
@@ -255,7 +255,7 @@ public class Program
         }
         for(int i = 0;i < C.GetLength(0);i++){
             for(int j = 0;j < C.GetLength(1) ;j++){
-                if (C[i,j]  < 0 && mx[i,1] > j){
+                if (C[i,j]  < 0 && mx[i,1] > j && mx[i,0] != 0){
                     C[i,j] /= mx[i,0];
                 }
             }
@@ -729,28 +729,17 @@ public class Program
                 }
             }
         }
-        int row2,buf;
-        while(row != k-1) {
-            if (row > k - 1) row2 = row -1;
-            else row2 = row + 1;
-            for(int i = 0; i < n;i++){
-                buf = matrix[row , i];
-                matrix[row,i] = matrix[row2,i];
-                matrix[row2,i] = buf;
+        int buf;
+        for(int i = 0; i < n;i++){
+            buf = matrix[row , i];
+            matrix[row,i] = matrix[k-1,i];
+            matrix[k-1,i] = buf;
             }
-            row = row2;
-        } 
-        int col2; 
-        while(col != k-1) {
-            if (col > k - 1) col2 = col -1;
-            else col2 = col + 1;
-            for(int i = 0; i < n;i++){
-                buf = matrix[i , col];
-                matrix[i,col] = matrix[i,col2];
-                matrix[i,col2] = buf;
-            }
-            col = col2;
-        } 
+        for(int i = 0; i < n;i++){
+            buf = matrix[i , col];
+            matrix[i,col] = matrix[i,k-1];
+            matrix[i,k-1] = buf;
+        }
         return matrix;
     }
     public (int[], int[]) Task_3_6(int[,] matrix)

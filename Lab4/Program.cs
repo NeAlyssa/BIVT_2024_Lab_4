@@ -136,15 +136,16 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
-            int[,] matrix = {
-                { 1,    2,      -3,     7,      -5,     7,      7 },
-                { 5,    6,      -7,     8,      9,      9,      -11 },
-                { 9,    10,     11,     12,     13,     15,     15 },
-                { -13,  0,      25,     25,     16,     0,      -19 },
-                { -6,   -5,     -1,     -2,     -3,     -4,     0 }
+              int[,] matrix = {
+                { 1, 2, -3, 7, 7, 0 },
+                { 5, 6, -7, 9, -11, 1 },
+                { 9, 10, 11, 15, 15, 2 },
+                { -13, 14, 5, 25, -19, 3 },
+                { 5, 6, -7, 8, -99, 4},
+                { 0, 0, -1, -2, -3, 5 }
             };
 
-            program.Task_3_11(matrix);
+            program.Task_3_5(matrix, 2);
 
     }
             
@@ -879,12 +880,12 @@ public class Program
     public int[,] Task_3_5(int[,] matrix, int k)
     {
         // code here
-        k -= 1;
         int n = matrix.GetLength(0);
 
-        if (n != matrix.GetLength(1) || k < 0 || k >= n)
+        if (n != matrix.GetLength(1) || k <= 0 || k > n)
             return null;
 
+        k -= 1;
         int maxValue = 0, maxI = 0, maxJ = 0;
 
         for (int i = 0; i < n; i++) {
@@ -895,28 +896,22 @@ public class Program
                 maxI = i;
                 maxJ = rowMaxIndex;
             }
+    
         }
 
 
-        int rowIncrOrDecr = (maxI < k) ? 1 : -1;
-
-        for (int i = maxI; i != k; i += rowIncrOrDecr) {
-
+        if (maxI != k) {
             for (int j = 0; j < n; j++) {
-                (matrix[i, j], matrix[i + rowIncrOrDecr, j]) =  (matrix[i + rowIncrOrDecr, j], matrix[i, j]);
+                (matrix[k, j], matrix[maxI, j]) = (matrix[maxI, j], matrix[k, j]);
             }
         }
 
-
-
-        int colIncrOrDecr = (maxJ < k) ? 1 : -1;
-
-        for (int j = maxJ; j != k; j += colIncrOrDecr) {
-
+        if (maxJ != k) {
             for (int i = 0; i < n; i++) {
-                (matrix[i, j], matrix[i, j + colIncrOrDecr]) =  (matrix[i, j + colIncrOrDecr], matrix[i, j]);
+                (matrix[i, k], matrix[i, maxJ]) = (matrix[i, maxJ], matrix[i, k]);
             }
         }
+        
         // end
 
         for (int i = 0; i < n; i++) {

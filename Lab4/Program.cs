@@ -133,7 +133,7 @@ public class Program
         int max = int.MinValue, row = -1, temp;
         for(int i = 0; i < 5; i++) 
         {
-            if(max <= A[i,3]) {max = A[i,3]; row = i;};
+            if(max <= A[i,2]) {max = A[i,2]; row = i;};
         }
         
         if(row == 3) return A;
@@ -265,6 +265,7 @@ public class Program
         
         for(int i = 0; i < n; i++) 
         {
+            if(max[i] == 0) continue;
             for(int j = 0; j < max_index[i]; j++) 
             {
                 if(C[i,j] < 0) C[i,j] /= max[i];
@@ -814,6 +815,8 @@ public class Program
             }
         }
         
+        
+        /* Для 1-й версии тестов (пошаговое перемещение строк и столбцов)
         while(maxRow != k) 
         {
             swapTo = (maxRow < k) ? maxRow + 1 : maxRow - 1;  
@@ -827,7 +830,12 @@ public class Program
             swapColumns(ref matrix, maxCol, swapTo);
             maxCol = swapTo;
         }
-
+        */
+        
+        // Разовый swap соответствующих двух строк и двух столбцов, для 2-й версии тестов
+        swapRows(ref matrix, maxRow, k);
+        swapColumns(ref matrix, maxCol, k);
+        
         return matrix;
     }
     public (int[], int[]) Task_3_6(int[,] matrix)

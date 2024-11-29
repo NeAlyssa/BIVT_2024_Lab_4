@@ -534,16 +534,72 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n!=5 || m != 7)
+        {
+            return null;
+        }
+        for (int i =0; i<n; i++)
+        {
+            int pos = 0; double mx = -1e9;
+            for (int j = 0; j<m; j++)
+            {
+                if (mx < A[i, j])
+                {
+                    pos = j;
+                    mx = A[i, j];
+                }
+            }
 
+            double l = 1e9, r = 1e9;
+            if (pos>0) l = A[i, pos - 1];
+            if (pos < m) r = A[i, pos + 1];
+
+            if (l < r) {
+                if (A[i, pos - 1] > 0) A[i, pos - 1] *= 2;
+                else A[i, pos - 1] /= 2;
+            }
+            else if (l > r) {
+                if (A[i, pos + 1] > 0) A[i, pos + 1] *= 2;
+                else A[i, pos + 1] /= 2;
+            }
+        }
         // end
 
         return A;
     }
-    #endregion
     public int[,] Task_2_2(int[,] A)
     {
         // code here
-
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 7 || m != 5)
+        {
+            return null;
+        }
+        for (int j = 0; j < m; j++)
+        {
+            int pos = 0; int mx = -10000000;
+            int cnt0 = 0, cnt1 = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (A[i, j] < 0) cnt0++;
+                else if (A[i, j] > 0) cnt1++;
+                if (mx<A[i, j])
+                {
+                    mx = A[i, j];
+                    pos = i;
+                }
+            }
+            //Console.WriteLine("{0:d}, {1:d}, {2:d}, {3:d}", pos, j, cnt0, cnt1);
+            if (cnt0 < cnt1)
+            {
+                A[pos,j] = 0;
+            }
+            else
+            {
+                A[pos, j] = pos;
+            }
+        }
         // end
 
         return A;
@@ -551,7 +607,33 @@ public class Program
     public int[,] Task_2_3(int[,] A)
     {
         // code here
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 10 || m != 5)
+        {
+            return null;
+        }
+        for (int j = 0; j < m; j++)
+        {
+            int pos = 0; int mx = -10000000;
+            for (int i = 0; i < n; i++)
+            {
+                if (mx < A[i, j])
+                {
+                    mx = A[i, j];
+                    pos = i;
+                }
+            }
 
+            if (pos > n / 2) continue;
+
+            int sum = 0;
+            for (int i = pos + 1; i<n; i++)
+            {
+                sum+= A[i, j];
+            }
+
+            A[0, j] = sum;
+        }
         // end
 
         return A;
@@ -559,7 +641,28 @@ public class Program
     public int[,] Task_2_4(int[,] A, int[] B)
     {
         // code here
-
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 7 || m != 5 || B.Length != 5)
+        {
+            return null;
+        }
+        for (int j = 0; j < m; j++)
+        {
+            int pos = 0; int mx = -10000000;
+            for (int i = 0; i < n; i++)
+            {
+                if (mx < A[i, j])
+                {
+                    mx = A[i, j];
+                    pos = i;
+                }
+            }
+            //Console.WriteLine("{0:d}, {1:d}, {2:d}, {3:d}", pos, j, B[j], A[pos,j]);
+            if (B[j] > A[pos, j])
+            {
+                A[pos, j] = B[j];
+            }
+        }
         // end
 
         return A;
@@ -567,16 +670,52 @@ public class Program
     public double[,] Task_2_5(double[,] A)
     {
         // code here
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 7 || m != 5)
+        {
+            return null;
+        }
+        for (int j = 0; j < m; j++)
+        {
+            int pos = 0; double mx = -10000000;
+            for (int i = 0; i < n; i++)
+            {
+                if (mx < A[i, j])
+                {
+                    mx = A[i, j];
+                    pos = i;
+                }
+            }
+            double sum = (A[0, j] + A[n - 1, j]) / 2;
 
+            if (sum > A[pos, j])
+            {
+                A[pos, j] = sum;
+            }
+            else
+            {
+                A[pos, j] = pos;
+            }
+        }
         // end
 
         return A;
     }
     public int[,] Task_2_6(int n)
     {
-        int[,] answer = default(int[,]);
+        if (n <= 0) return null;
+        int[,] answer = new int[n, 3*n];
         // code here
-
+        for (int i =0; i<n; i++)
+        {
+            for (int j =0; j < 3 * n; j++)
+            {
+                if ((j - i) % n == 0)
+                {
+                    answer[i, j] = 1;
+                }
+            }
+        }
         // end
 
         return answer;
@@ -584,6 +723,29 @@ public class Program
     public int[,] Task_2_7(int[,] A)
     {
         // code here
+        int r = 0, c = 0;
+        int mx = -1000000;
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 6 || m != 6)
+        {
+            return null;
+        }
+        for (int i = 0, j = 0; i < 6 && j < 6; j++, i++)
+        {
+            if (mx < A[i, j])
+            {
+                mx = A[i, j];
+                c = j; r = i;
+            }
+        }
+
+        for (int i = 0; i<r; i++)
+        {
+            for (int j = i+1; j<6; j++)
+            {
+                A[i, j] = 0;
+            }
+        }
 
         // end
 
@@ -592,7 +754,35 @@ public class Program
     public int[,] Task_2_8(int[,] B)
     {
         // code here
+        int n = B.GetLength(0), m = B.GetLength(1);
+        if (n != 6 || m != 6)
+        {
+            return null;
+        }
+        for (int i =0; i<n; i+=2)
+        {
+            int r = 0, c = 0;
+            int mx = -1000000;
+            for (int j = 0; j<n; j++)
+            {
+                if (B[i,j] > mx)
+                {
+                    mx = B[i, j]; c = j; r = i;
+                }
+            }
 
+            int r1 = 0, c1 = 0;
+            mx = -1000000;
+            for (int j = 0; j<n; j++)
+            {
+                if (B[i + 1, j] > mx)
+                {
+                    mx = B[i + 1, j]; c1 = j; r1 = i + 1;
+                }
+            }
+
+            (B[r, c], B[r1, c1]) = (B[r1, c1], B[r, c]);
+        }
         // end
 
         return B;
@@ -600,11 +790,24 @@ public class Program
     public int[,] Task_2_9(int[,] A)
     {
         // code here
-
+        int n = A.GetLength(0), m = A.GetLength(1);
+        if (n != 6 || m != 7)
+        {
+            return null;
+        }
+        for (int i = 0; i<n; i++)
+        {
+            for (int j = 0; j<m/2; j++)
+            {
+                (A[i,j], A[i,m-j-1]) = (A[i,m-j-1], A[i,j]);
+            }
+        }
         // end
 
         return A;
     }
+
+    #endregion
 
     #region Level 3
     public int[,] Task_3_1(int[,] matrix)

@@ -11,7 +11,26 @@ public class Program
 {
     public static void Main()
     {
+        /*int[,] matrix = {
+                { 1, 2, -3, 7, 7 },
+                { 5, 6, -7, 9, -11 },
+                { 9, 10, 11, 15, 15 },
+                { -13, 14, 25, 25, -19 },
+                { 5, 6, -7, 8, 9},
+                { -13, 14, 25, 25, -19 },
+                { 0, 0, -1, -2, -3 }
+            };
+        */
+        int[,] matrix = {
+                { 1,    2,      -3,     7,      -5,     7,      7 },
+                { 5,    6,      -7,     8,      9,      9,      -11 },
+                { 9,    10,     11,     12,     13,     15,     15 },
+                { -13,  -30,    25,     25,     16,     17,     -19 },
+                { -6,   -5,     -1,     -2,     -3,     -4,     -6 }
+            };
+
         Program program = new Program();
+        matrix = program.Task_3_10(matrix);
     }
     #region Level 1
     public int Task_1_1(int[,] A)
@@ -821,7 +840,18 @@ public class Program
     public int[,] Task_3_2(int[,] matrix)
     {
         // code here
-
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        if (n != m)
+        {
+            return null;
+        }
+        for (int i = 0; i<4*n; i++)
+        {
+            if (i < n && i >= 0) matrix[0, i] = 0;
+            else if (i >= n && i < 2 * n) matrix[i % n, n - 1] = 0;
+            else if (i >= n * 2 && i < 3 * n) matrix[n - 1, i % n] = 0;
+            else matrix[i % n, 0] = 0;
+        }
         // end
 
         return matrix;
@@ -838,7 +868,19 @@ public class Program
     public int[,] Task_3_4(int[,] matrix)
     {
         // code here
-
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        if (n != m)
+        {
+            return null;
+        }
+        for (int i = n/2; i < n; i++)
+        {
+            for (int j = 0; j<n; j++)
+            {
+                if (j>i) continue;
+                matrix[i, j] = 1;
+            }
+        }
         // end
 
         return matrix;
@@ -853,10 +895,30 @@ public class Program
     }
     public (int[], int[]) Task_3_6(int[,] matrix)
     {
-        int[] upper = default(int[]);
-        int[] lower = default(int[]);
         // code here
-
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        if (n != m)
+        {
+            return (null, null);
+        }
+        int[] upper = new int[(n * (n + 1)) / 2];
+        int[] lower = new int[(n * (n + 1)) / 2 - n];
+        int cnt = 0;
+        for (int i =0; i<n; i++)
+        {
+            for (int j = i; j<n; j++)
+            {
+                upper[cnt++] = matrix[i, j];
+            }
+        }
+        cnt = 0;
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                lower[cnt++] = matrix[i, j];
+            }
+        }
         // end
 
         return (upper, lower);
@@ -874,6 +936,48 @@ public class Program
     public int[,] Task_3_8(int[,] matrix)
     {
         // code here
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        if (n != 7 || m != 5)
+        {
+            return null;
+        }
+        int[] positive = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j<m; j++)
+            {
+                if (matrix[i, j] > 0) positive[i]++;
+            }
+        }
+
+        for (int i =0; i<n; i++)
+        {
+            int mx = -10000, pos = 0;
+            for (int j = i; j<n; j++)
+            {
+                if (positive[j] > mx)
+                {
+                    mx = positive[i];
+                    pos = j;
+                }
+            }
+
+            for (int j = 0; j<m; j++)
+            {
+                (matrix[i, j], matrix[pos, j]) = (matrix[pos, j], matrix[i, j]);
+            }
+
+            (positive[i], positive[pos]) = (positive[pos], positive[i]);
+        }
+
+        for (int i =0; i<n; i++)
+        {
+            for (int j = 0; j<m; j++)
+            {
+                Console.Write("{0:d} ", matrix[i, j]);
+            }
+            Console.WriteLine();
+        }
 
         // end
 
@@ -890,6 +994,47 @@ public class Program
     public int[,] Task_3_10(int[,] matrix)
     {
         // code here
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        for (int k = 0; k < n; k++)
+        {
+            if (k % 2 == 0)
+            {
+                for (int i = 0; i < m; i++)
+                {
+                    int j = i - 1;
+                    int now = matrix[k, i];
+                    while (j >= 0 && matrix[k, j] < now)
+                    {
+                        (matrix[k, j + 1]) = matrix[k, j];
+                        j -= 1;
+                    }
+                    matrix[k, j + 1] = now;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m; i++)
+                {
+                    int j = i - 1;
+                    int now = matrix[k, i];
+                    while (j >= 0 && matrix[k, j] > now)
+                    {
+                        (matrix[k, j + 1]) = matrix[k, j];
+                        j -= 1;
+                    }
+                    matrix[k, j + 1] = now;
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                Console.Write("{0:d} ", matrix[i, j]);
+            }
+            Console.WriteLine();
+        }
 
         // end
 

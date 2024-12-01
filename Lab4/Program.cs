@@ -653,14 +653,14 @@ public class Program
             }
             for (int i = 0; i < A.GetLength(0); i++)
             {
-                if (A[i, j] == mx)
+                if (B[i, j] == mx)
                 {
                     if (pos > neg)
                     {
                         B[i, j] = 0;
                     } else
                     {
-                        B[i, j] = i;
+                        B[i, j] = i + 1;
                     }
                     break;
                 }
@@ -798,7 +798,7 @@ public class Program
                         B[i, j] = (A[0, j] + A[A.GetLength(0) - 1, j]) / 2;
                     } else
                     {
-                        B[i, j] = i;
+                        B[i, j] = i + 1;
                     }
                     break;
                 }

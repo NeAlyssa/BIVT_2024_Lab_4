@@ -516,7 +516,16 @@ public class Program
             }
 
             if (pos > neg) A[maxPos, j] = 0;
-            else A[maxPos, j] = maxPos;
+            else A[maxPos, j] = maxPos + 1;
+        }
+
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                Console.Write($"{A[i, j]}\t"); // Используем \t для табуляции
+            }
+            Console.WriteLine(); // Переход на новую строку после каждой строки матрицы
         }
 
         return A;
@@ -581,7 +590,7 @@ public class Program
             if (maxVal < sum)
                 A[maxPos, j] = sum;
             else 
-                A[maxPos, j] = maxPos;
+                A[maxPos, j] = maxPos + 1;
         }
 
         return A;

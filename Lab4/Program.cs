@@ -547,7 +547,7 @@ public class Program
             }
             
             if(pos > neg) A[mxInd,j] = 0;
-            else A[mxInd,j] = mxInd;
+            else A[mxInd,j] = mxInd + 1;
         }
         
         return A;
@@ -616,7 +616,7 @@ public class Program
             }
             
             if(mx < ps) A[mxInd, j] = ps;
-            else A[mxInd, j] = mxInd;
+            else A[mxInd, j] = mxInd + 1;
             
         }
 

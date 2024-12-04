@@ -302,7 +302,7 @@ public class Program
         //В матрице Н размера 5 × 7 заполнены первые 6 столбцов.
         //Поместить в качестве предпоследнего столбца столбец, состоящий из максимальных элементов строк.
         if (H.GetLength(0) != 5 || H.GetLength(1) != 7) return null;
-        //int[] Mazx = new int[H.GetLength(1)];
+        
         for (int i = 0; i < 5; i++)
         {
             int maxx = -1000000;
@@ -530,44 +530,44 @@ public class Program
         if (n != 5 || m != 7)
             return null;
 
-        int maxElementCol;
-        double maxElement;
+        int maxElCol;
+        double maxEl;
 
         for (int row = 0; row < n; row++)
         {
-            maxElement = -1000000000000000;
-            maxElementCol = 0;
+            maxEl = -1000000000000000;
+            maxElCol = 0;
 
             for (int col = 0; col < m; col++)
             {
-                if (A[row, col] <= maxElement)
+                if (A[row, col] <= maxEl)
                     continue;
-                maxElement = A[row, col];
-                maxElementCol = col;
+                maxEl = A[row, col];
+                maxElCol = col;
             }
 
-            if (maxElementCol == 0)
+            if (maxElCol == 0)
                 if (A[row, 1] > 0)
                     A[row, 1] *= 2.0;
                 else
                     A[row, 1] /= 2.0;
-            else if (maxElementCol == 6)
+            else if (maxElCol == 6)
                 if (A[row, 5] > 0)
                     A[row, 5] *= 2.0;
                 else
                     A[row, 5] /= 2.0;
             else
             {
-                if (A[row, maxElementCol - 1] > A[row, maxElementCol + 1])
-                    if (A[row, maxElementCol + 1] > 0)
-                        A[row, maxElementCol + 1] *= 2.0;
+                if (A[row, maxElCol - 1] > A[row, maxElCol + 1])
+                    if (A[row, maxElCol + 1] > 0)
+                        A[row, maxElCol + 1] *= 2.0;
                     else
-                        A[row, maxElementCol + 1] /= 2.0;
-                else if (A[row, maxElementCol + 1] > A[row, maxElementCol - 1])
-                    if (A[row, maxElementCol - 1] > 0)
-                        A[row, maxElementCol - 1] *= 2.0;
+                        A[row, maxElCol + 1] /= 2.0;
+                else if (A[row, maxElCol + 1] > A[row, maxElCol - 1])
+                    if (A[row, maxElCol - 1] > 0)
+                        A[row, maxElCol - 1] *= 2.0;
                     else
-                        A[row, maxElementCol - 1] /= 2.0;
+                        A[row, maxElCol - 1] /= 2.0;
             }
         }
         return A;
@@ -934,7 +934,6 @@ public class Program
                 }
                 if (curr < next)
                 {
-                    
                     for (int  w = 0; w < A.GetLength(1); w++)
                     {
                         int temp = A[j, w];

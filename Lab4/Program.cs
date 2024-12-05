@@ -457,13 +457,13 @@ public class Program
         // code here
         int row = A.GetLength(0);
         int col = A.GetLength(1);
-        int [,] answer = new int [row-1, col];
         double med;
         int MaxSum = int.MinValue;
         int MaxIndex = -1;
         if (row != 7 || col != 5){
             return null;
         }
+        int [,] answer = new int [row-1, col];
         for (int i = 0; i < row; i++){
             int sum = 0;
             for (int j = 0; j < col; j++){

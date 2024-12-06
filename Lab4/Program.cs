@@ -658,7 +658,6 @@ public class Program
 
         return A;
     }
-    
     public int[,] Task_2_2(int[,] A)
     {
         // code here
@@ -692,7 +691,7 @@ public class Program
                 A[maxIdx, i] = 0;
             } else
             {
-                A[maxIdx, i] = maxIdx;
+                A[maxIdx, i] = maxIdx + 1;
             }
             
         }
@@ -802,7 +801,7 @@ public class Program
                 A[maxIdx, i] = avgSum;
             } else
             {
-                A[maxIdx, i] = maxIdx;
+                A[maxIdx, i] = maxIdx + 1;
             }
 
         }
@@ -1120,22 +1119,9 @@ public class Program
             }
         }
 
-        k--;
-
-        if (maxCol > k)
-            for (int i = maxCol; i > k; i--)
-                SwapCols(matrix, i, i - 1);
-        else
-            for (int i = maxCol; i < k; i++)
-                SwapCols(matrix, i, i + 1);
-
-        if (maxRow > k)
-            for (int i = maxRow; i > k; i--)
-                SwapRows(matrix, i, i - 1);
-        else
-            for (int i = maxRow; i < k; i++)
-                SwapRows(matrix, i, i + 1);
-        
+        SwapCols(matrix, maxCol, k - 1);
+        SwapRows(matrix, maxRow, k - 1);
+       
         PrintMatrix(matrix);
         // end
 

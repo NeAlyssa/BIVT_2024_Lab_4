@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
@@ -12,17 +13,30 @@ public class Program
     {
         Program program = new Program();
         int[,] matrix = {
-                { 1, 2, -3, 7, -5, 7, 7, 0 },
-                { 5, 6, -7, 8, 9, 9, -11, 0},
-                { 9, 10, 11, 12, 13, 15, 15, 0 },
-                { -13, 14, 25, 25, 16, 17, -19, 0 },
-                { 0, 0, -1, -2, -3, -4, -6, 0 }
+                { 1, 2, -3, 7, 7 },
+                { 5, 6, -7, 9, -11 },
+                { 9, 10, 11, 15, 15 },
+                { -13, 14, 25, 25, -19 },
+                { 5, 6, -7, 8, 9},
+                { -13, 14, 25, 25, -19 },
+                { 0, 0, -1, -2, -3 }
             };
-            int[] vector = new int[] { 1, 2, 3, 4, 5 };
-        program.Task_1_31(matrix, vector);
+        int[] vector = new int[] { 1, 2, 3, 4, 5 };
+        program.Task_3_10(matrix);
     }
 
     public static void PrintMatrix(int[,] matrix){
+        int AHeight = matrix.GetLength(0), AWeight = matrix.GetLength(1);
+
+        for (int i = 0; i < AHeight; i++){
+            for (int j = 0; j < AWeight; j++){
+                System.Console.Write(matrix[i, j] + " ");
+            }
+            System.Console.WriteLine();
+        }
+    }
+    
+    public static void PrintMatrixDouble(double[,] matrix){
         int AHeight = matrix.GetLength(0), AWeight = matrix.GetLength(1);
 
         for (int i = 0; i < AHeight; i++){
@@ -564,15 +578,108 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
 
+        if (row != 5 || col != 7){
+            return null;
+        }
+
+        for (int i = 0; i < row; i++){
+            double MaxVal = double.MinValue;
+            int MaxIndex = -1;
+            for (int j = 0; j < col; j++){
+                if (A[i, j] > MaxVal){
+                    MaxVal = A[i, j];
+                    MaxIndex = j;
+                }
+            }
+            if (MaxIndex == col-1){
+                if ( A[i, MaxIndex-1] < 0){
+                    A[i, MaxIndex-1] /= 2;
+                }
+                else{
+                    A[i, MaxIndex-1] *= 2;
+                }
+            }
+            if (MaxIndex == 0){
+                if ( A[i, MaxIndex+1] < 0){
+                    A[i, MaxIndex+1] /= 2;
+                }
+                else{
+                    A[i, MaxIndex+1] *= 2;
+                }
+            }
+            else{
+            double leftChar = A[i, MaxIndex-1];
+            double rightChar = A[i, MaxIndex+1];
+            if (leftChar < rightChar){
+                if ( A[i, MaxIndex-1] < 0){
+                    A[i, MaxIndex-1] /= 2;
+                }
+                else{
+                    A[i, MaxIndex-1] *= 2;
+                }
+            }
+            else{
+                if ( A[i, MaxIndex+1] < 0){
+                    A[i, MaxIndex+1] /= 2;
+                }
+                else{
+                    A[i, MaxIndex+1] *= 2;
+                }
+            }
+            }
+
+        }
         // end
 
         return A;
     }
-    #endregion
     public int[,] Task_2_2(int[,] A)
     {
         // code here
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
+
+        if (row != 7 || col != 5){
+            return null;
+        }
+
+        for (int j = 0; j < col; j++){
+            double MaxVal = double.MinValue;
+            int MaxIndexI = -1;
+            int MaxIndexJ = -1;
+            double MinVal = double.MaxValue;
+            int MinIndexI = -1;
+            int MinIndexJ = -1;
+            int MaxCount = 0;
+            int MinCount = 0;
+            for (int i = 0; i < row; i++){
+                if (A[i, j] > 0){
+                    MaxCount++;
+                }
+                if (A[i, j] < 0){
+                    MinCount++;
+                }
+                if (A[i, j] > MaxVal){
+                    MaxVal = A[i, j];
+                    MaxIndexI = i;
+                    MaxIndexJ = j; 
+                }
+                if (A[i, j] < MinVal){
+                    MinVal = A[i, j];
+                    MinIndexI = i;
+                    MinIndexJ = j; 
+                }
+            }
+            if (MaxCount > MinCount){
+                A[MaxIndexI, MaxIndexJ] = 0;
+            }
+            else{
+                A[MaxIndexI, MaxIndexJ] = MaxIndexI+1;
+            }
+        }
 
         // end
 
@@ -581,7 +688,47 @@ public class Program
     public int[,] Task_2_3(int[,] A)
     {
         // code here
+        PrintMatrix(A);
+        System.Console.WriteLine();
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
 
+        if (row != 10 || col != 5){
+            return null;
+        }
+        
+        for (int j = 0; j < col; j++){
+            double MaxVal = double.MinValue;
+            int MaxIndexI = -1;
+            int MaxIndexJ = -1;
+            double MinVal = double.MaxValue;
+            int MinIndexI = -1;
+            int MinIndexJ = -1;
+            int MaxCount = 0;
+            int MinCount = 0;
+            for (int i = 0; i < row; i++){
+                if (A[i, j] > MaxVal){
+                    MaxVal = A[i, j];
+                    MaxIndexI = i;
+                    MaxIndexJ = j; 
+                }
+                if (A[i, j] < MinVal){
+                    MinVal = A[i, j];
+                    MinIndexI = i;
+                    MinIndexJ = j; 
+                }
+            }
+            int SumEl = 0;
+            for (int i = 0; i < row; i++){
+                if (i > MaxIndexI){
+                    SumEl += A[i, j];
+                }
+            }
+            if (MaxIndexJ <= (row+1)/2){
+                A[0, j] = SumEl;
+            }
+        }
+        PrintMatrix(A);
         // end
 
         return A;
@@ -589,6 +736,40 @@ public class Program
     public int[,] Task_2_4(int[,] A, int[] B)
     {
         // code here
+        PrintMatrix(A);
+        System.Console.WriteLine();
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
+
+        if (row != 7 || col != 5 || B.Length != 5){
+            return null;
+        }
+        
+        for (int j = 0; j < col; j++){
+            double MaxVal = double.MinValue;
+            int MaxIndexI = -1;
+            int MaxIndexJ = -1;
+            double MinVal = double.MaxValue;
+            int MinIndexI = -1;
+            int MinIndexJ = -1;
+            int MaxCount = 0;
+            int MinCount = 0;
+            for (int i = 0; i < row; i++){
+                if (A[i, j] > MaxVal){
+                    MaxVal = A[i, j];
+                    MaxIndexI = i;
+                    MaxIndexJ = j; 
+                }
+                if (A[i, j] < MinVal){
+                    MinVal = A[i, j];
+                    MinIndexI = i;
+                    MinIndexJ = j; 
+                }
+            }
+            if (A[MaxIndexI, MaxIndexJ] < B[j]){
+                A[MaxIndexI, MaxIndexJ] = B[j];
+            }
+        }
 
         // end
 
@@ -597,32 +778,156 @@ public class Program
     public double[,] Task_2_5(double[,] A)
     {
         // code here
+        PrintMatrixDouble(A);
+        System.Console.WriteLine();
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
 
+        if (row != 7 || col != 5){
+            return null;
+        }
+        
+        for (int j = 0; j < col; j++){
+            double MaxVal = double.MinValue;
+            int MaxIndexI = -1;
+            int MaxIndexJ = -1;
+            double MinVal = double.MaxValue;
+            int MinIndexI = -1;
+            int MinIndexJ = -1;
+            int MaxCount = 0;
+            int MinCount = 0;
+            double sum = 0;
+            for (int i = 0; i < row; i++){
+                if (A[i, j] > MaxVal){
+                    MaxVal = A[i, j];
+                    MaxIndexI = i;
+                    MaxIndexJ = j; 
+                }
+                if (A[i, j] < MinVal){
+                    MinVal = A[i, j];
+                    MinIndexI = i;
+                    MinIndexJ = j; 
+                }
+            }
+            sum = (A[0, j] + A[row-1, j])/2;
+            if (MaxVal < sum){
+                A[MaxIndexI, MaxIndexJ] = sum;
+            }
+            else{
+                A[MaxIndexI, MaxIndexJ] = MaxIndexI+1;
+            }
+            
+
+        }
         // end
 
         return A;
     }
     public int[,] Task_2_6(int n)
     {
-        int[,] answer = default(int[,]);
+        if (n < 1){
+            return null;
+        }
+        int[,] answer = new int[n,3*n];
+        int row = answer.GetLength(0);
+        int col = answer.GetLength(1);
         // code here
-
         // end
-
+        for (int i = 0; i < row; i++){
+            for (int j = i; j < col; j+=(n)){
+                //System.Console.WriteLine(j);
+                answer[i, j] = 1;
+                
+                    System.Console.WriteLine(i);
+                }
+        }
+        PrintMatrix(answer);
         return answer;
     }
     public int[,] Task_2_7(int[,] A)
     {
         // code here
+        PrintMatrix(A);
+        System.Console.WriteLine();
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
 
+        double MaxVal = double.MinValue;
+        int MaxIndexI = -1;
+        int MaxIndexJ = -1;
+        double MinVal = double.MaxValue;
+        int MinIndexI = -1;
+        int MinIndexJ = -1;
+        int MaxCount = 0;
+        int MinCount = 0;
+        double sum = 0;
+
+        if (row != 6 || col != 6){
+            return null;
+        }
+        
+        for (int i = 0; i < row; i++){
+            if (A[i, i] > MaxVal){
+                MaxVal = A[i, i];
+                MaxIndexI = i;
+            }
+        }
+
+        for (int i = 0; i < MaxIndexI; i++){
+            for (int j = i + 1; j < col; j++){
+                //System.Console.Write($"{i} {j} ");
+                A[i, j] = 0;
+            }
+            System.Console.WriteLine();
+        }
         // end
-
+        PrintMatrix(A);
         return A;
     }
     public int[,] Task_2_8(int[,] B)
     {
         // code here
+        PrintMatrix(B);
+        System.Console.WriteLine();
+        int row = B.GetLength(0);
+        int col = B.GetLength(1);
 
+        if (row != 6 || col != 6){
+            return null;
+        }
+
+        for (int i = 0; i < row-1; i+=2){
+            double MaxValFirst = double.MinValue;
+            double MaxValSecond = double.MinValue;
+            
+            int MaxIndexFirstI = -1;
+            int MaxIndexFirstJ = -1;
+
+            int MaxIndexSecondI = -1;
+            int MaxIndexSecondJ = -1;
+            for (int j = 0; j < col; j++){
+                // System.Console.Write($"{B[i, j]} ");
+                // System.Console.WriteLine($"{B[i+1, j]}");
+                if (B[i, j] > MaxValFirst){
+                    MaxValFirst = B[i, j];
+                    MaxIndexFirstI = i;
+                    MaxIndexFirstJ = j;
+                }
+                if (B[i+1, j] > MaxValSecond){
+                    MaxValSecond = B[i+1, j];
+                    MaxIndexSecondI = i+1;
+                    MaxIndexSecondJ = j;
+                }
+            }
+            int tmp = B[MaxIndexFirstI, MaxIndexFirstJ];
+            B[MaxIndexFirstI, MaxIndexFirstJ] = B[MaxIndexSecondI, MaxIndexSecondJ];
+            B[MaxIndexSecondI, MaxIndexSecondJ] = tmp;
+            System.Console.Write($"{MaxIndexFirstI}, {MaxIndexSecondJ} ");
+            System.Console.WriteLine($"{MaxIndexSecondI}, {MaxIndexSecondJ}");
+            //System.Console.WriteLine($"{B[MaxIndexFirstI, MaxIndexFirstJ]}, {tmp}");
+
+        }
+        PrintMatrix(B);
         // end
 
         return B;
@@ -630,12 +935,35 @@ public class Program
     public int[,] Task_2_9(int[,] A)
     {
         // code here
+        PrintMatrix(A);
+        System.Console.WriteLine();
+        int row = A.GetLength(0);
+        int col = A.GetLength(1);
 
+        if (row != 6 || col != 7){
+            return null;
+        }
+
+        for (int i = 0; i < row; i++){
+            int [] tmp = new int[col];
+            for (int j = 0; j < col; j++){
+                tmp[j] = A[i, j];
+            }
+            // for(int k = 0; k < tmp.Length; k++){
+            //         System.Console.Write(tmp[k]+" ");
+            //     }
+            //     System.Console.WriteLine();
+            for (int j = col-1; j >= 0; j--){
+                //System.Console.WriteLine($"{j} {col-j-1}");
+                A[i, j] = tmp[col-j-1];
+            }
+        }
+        PrintMatrix(A);
         // end
 
         return A;
     }
-
+    #endregion
     #region Level 3
     public int[,] Task_3_1(int[,] matrix)
     {
@@ -648,7 +976,20 @@ public class Program
     public int[,] Task_3_2(int[,] matrix)
     {
         // code here
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
 
+        if (row != col || row < 1){
+            return null;
+        }
+
+        for (int i = 0; i < row; i++){
+            for (int j = 0; j < col; j++){
+                if (i == 0 || j == 0 || i == row-1 || j == col-1){
+                    matrix[i, j] = 0;
+                }
+            }
+        }
         // end
 
         return matrix;
@@ -665,7 +1006,20 @@ public class Program
     public int[,] Task_3_4(int[,] matrix)
     {
         // code here
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
 
+        if (row != col || row < 1){
+            return null;
+        }
+        int ind = (col/2)+1;
+        for (int i = row/2; i < row; i++){
+            for (int j = 0; j < ind; j++){
+                matrix[i, j] = 1;
+            }
+            ind++;
+        }
+        PrintMatrix(matrix);
         // end
 
         return matrix;
@@ -680,10 +1034,48 @@ public class Program
     }
     public (int[], int[]) Task_3_6(int[,] matrix)
     {
-        int[] upper = default(int[]);
-        int[] lower = default(int[]);
-        // code here
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
 
+        int CountUpper = 0;
+        for (int i = 1; i < row+1; i++){
+            CountUpper+=i;
+        }
+        int CountLower = row*row-CountUpper;
+        int[] upper = new int[CountUpper];
+        int[] lower = new int[CountLower];
+        // code here
+        //System.Console.WriteLine(CountUpper);
+        if (row != col || row < 1){
+            return (null, null);
+        }
+        int k = 0;
+        int k2 =0;
+        for (int i = 0; i < row; i++){
+            string s = "";
+            for (int j = i; j < col; j++){
+                upper[k] = matrix[i, j];
+                
+                s += $" {matrix[i, j], 2}";
+                k+=1;
+            }
+            System.Console.Write($"{s,20}");
+            System.Console.WriteLine();
+            string s2 = "";
+            for (int j = 0; j < i; j++){
+                //matrix[i, j] = 0; 
+                lower[k2] = matrix[i, j];
+                k2++;  
+                s2 +=$" {matrix[i, j], 2}";
+            }
+            System.Console.Write($"{s2,-20}");
+            System.Console.WriteLine();
+        }
+        // foreach (int member in upper){
+        //     System.Console.Write(member + " ");
+        // }
+        System.Console.WriteLine();
+        PrintMatrix(matrix);
         // end
 
         return (upper, lower);
@@ -701,7 +1093,41 @@ public class Program
     public int[,] Task_3_8(int[,] matrix)
     {
         // code here
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
 
+        if (row != 7 || col != 5){
+            return null;
+        }
+        int[] CountList = new int[row];
+        for (int i = 0; i < row; i++){
+            int count = 0;
+            for (int j = 0; j < col; j++){
+                if(matrix[i, j] > 0){
+                    count++;
+                }
+            }
+            CountList[i] = count;
+        }
+        for (int i = 0; i < row-1; i++){
+            for (int j = 0; j < row-i-1; j++){
+                if (CountList[j] < CountList[j+1]){
+                    int temp = CountList[j];
+                    CountList[j] = CountList[j + 1];
+                    CountList[j + 1] = temp;
+
+                    for (int index = 0; index < col; index++){
+                        int tmpMat = matrix[j, index];
+                        matrix[j, index] = matrix[j+1, index];
+                        matrix[j+1, index] = tmpMat;
+                    }
+                }
+            }
+        }
+        foreach(int member in CountList){
+            System.Console.WriteLine(member);
+        }
+        PrintMatrix(matrix);
         // end
 
         return matrix;
@@ -714,12 +1140,56 @@ public class Program
 
         return matrix;
     }
+    
+    public int[] TopSort(int[] matrix){
+        int n = matrix.Length;
+        for (int i = 0; i < n - 1; i++){
+            for (int j = 0; j < n - i - 1; j++){
+                if (matrix[j] > matrix[j+1]){
+                    int tmp = matrix[j];
+                    matrix[j] = matrix[j+1];
+                    matrix[j+1] = tmp;
+                }
+            }
+        }
+        return matrix;
+    }
+    
     public int[,] Task_3_10(int[,] matrix)
     {
         // code here
 
-        // end
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
 
+        if (row < 1 || col < 1){
+            return null;
+        }
+
+        for (int i = 0; i < row; i+=2){
+            for (int j = 0; j < col - 1; j++){
+                for (int k = 0; k < col - j - 1; k++){
+                    if (matrix[i, k] < matrix[i, k+1]){
+                        int tmp = matrix[i, k];
+                        matrix[i, k] = matrix[i, k+1];
+                        matrix[i, k+1] = tmp;
+                    }
+                }
+            }
+        }
+        for (int i = 1; i < row; i+=2){
+            for (int j = 0; j < col - 1; j++){
+                for (int k = 0; k < col - j - 1; k++){
+                    if (matrix[i, k] > matrix[i, k+1]){
+                        int tmp = matrix[i, k];
+                        matrix[i, k] = matrix[i, k+1];
+                        matrix[i, k+1] = tmp;
+                    }
+                }
+            }
+        }
+        // end
+        PrintMatrix(matrix);
         return matrix;
     }
     public int[,] Task_3_11(int[,] matrix)

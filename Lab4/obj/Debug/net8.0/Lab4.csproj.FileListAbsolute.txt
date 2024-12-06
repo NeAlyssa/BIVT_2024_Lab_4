@@ -26,3 +26,4 @@ C:/Users/Markosias/Documents/BIVT-24/Lab4/obj/Debug/net8.0/ref/Lab4.dll
 /Users/vadim/Desktop/c# labs/BIVT_2024_Lab_4/Lab4/obj/Debug/net8.0/Lab4.pdb
 /Users/vadim/Desktop/c# labs/BIVT_2024_Lab_4/Lab4/obj/Debug/net8.0/Lab4.genruntimeconfig.cache
 /Users/vadim/Desktop/c# labs/BIVT_2024_Lab_4/Lab4/obj/Debug/net8.0/ref/Lab4.dll
+/Users/vadim/Desktop/c# labs/BIVT_2024_Lab_4/Lab4/obj/Debug/net8.0/Lab4.sourcelink.json

@@ -13,16 +13,14 @@ public class Program
     {
         Program program = new Program();
         int[,] matrix = {
-                { 1, 2, -3, 7, 7 },
-                { 5, 6, -7, 9, -11 },
-                { 9, 10, 11, 15, 15 },
-                { -13, 14, 25, 25, -19 },
-                { 5, 6, -7, 8, 9},
-                { -13, 14, 25, 25, -19 },
-                { 0, 0, -1, -2, -3 }
+                { 1,    2,      -3,     7,      -5,     7,      7 },
+                { 5,    6,      -7,     8,      9,      9,      -11 },
+                { 9,    10,     11,     12,     13,     15,     15 },
+                { -13,  0,      25,     25,     16,     0,      -19 },
+                { -6,   -5,     -1,     -2,     -3,     -4,     0 }
             };
         int[] vector = new int[] { 1, 2, 3, 4, 5 };
-        program.Task_3_10(matrix);
+        program.Task_3_11(matrix);
     }
 
     public static void PrintMatrix(int[,] matrix){
@@ -1195,10 +1193,63 @@ public class Program
     public int[,] Task_3_11(int[,] matrix)
     {
         // code here
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
+        if (row < 1 || col < 1){
+            return null;
+        }
+        int countNulls = 0;
+        for (int i = 0; i < row; i++){
+            for (int j = 0; j < col; j++){
+                if (matrix[i, j] == 0){
+                    countNulls++;
+                    break;
+                }
+            }
+        }
+        System.Console.WriteLine(countNulls);
+        int[] nulls = new int[countNulls];
+        int nullsIndex = 0;
+        for (int i = 0; i < row; i++){
+            bool flag = false;
+            for (int j = 0; j < col; j++){
+                if (matrix[i, j] == 0){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == true){
+            nulls[nullsIndex] = i;
+            nullsIndex++;
+            }
+        }
 
+        foreach(int member in nulls){
+            System.Console.WriteLine(member);
+        }
+        
+        int[,] answer = new int[row - nulls.Length, col];
+        int index = 0;
+        for (int i = 0; i < row; i++){
+            bool flag = false;
+            for (int j = 0; j < nulls.Length; j++){
+                if (i == nulls[j]){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == true){
+                continue;
+            }
+            for (int j = 0; j < col; j++){
+                answer[index, j] = matrix[i, j];
+            }
+            index++;
+        }
         // end
+        PrintMatrix(answer);
 
-        return matrix;
+        return answer;
     }
     #endregion
 }

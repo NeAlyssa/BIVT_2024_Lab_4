@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 using System.Xml.Linq;
 
 public class Program
@@ -616,7 +617,7 @@ public class Program
             }
             else
             {
-                A[pos, j] = pos;
+                A[pos, j] = pos + 1;
             }
         }
         // end
@@ -713,7 +714,7 @@ public class Program
             }
             else
             {
-                A[pos, j] = pos;
+                A[pos, j] = pos + 1;
             }
         }
         // end
@@ -942,6 +943,7 @@ public class Program
             return null;
         }
         int[] positive = new int[n];
+
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j<m; j++)
@@ -950,24 +952,20 @@ public class Program
             }
         }
 
-        for (int i =0; i<n; i++)
+        for (int i = 0; i<n; i++)
         {
-            int mx = -10000, pos = 0;
-            for (int j = i; j<n; j++)
+            for (int j = 1; j < n - i - 1; j++)
             {
-                if (positive[j] > mx)
+                if (positive[j] > positive[j - 1])
                 {
-                    mx = positive[i];
-                    pos = j;
+                    for (int k = 0; k < m; k++)
+                    {
+                        (matrix[j - 1, k], matrix[j, k]) = (matrix[j, k], matrix[j - 1, k]);
+                    }
+
+                    (positive[j - 1], positive[j]) = (positive[j], positive[j - 1]);
                 }
             }
-
-            for (int j = 0; j<m; j++)
-            {
-                (matrix[i, j], matrix[pos, j]) = (matrix[pos, j], matrix[i, j]);
-            }
-
-            (positive[i], positive[pos]) = (positive[pos], positive[i]);
         }
 
         for (int i =0; i<n; i++)
@@ -1043,10 +1041,50 @@ public class Program
     public int[,] Task_3_11(int[,] matrix)
     {
         // code here
-
+        int n = matrix.GetLength(0), m = matrix.GetLength(1);
+        int cnt = 0;
+        for (int i =0; i<n; i++)
+        {
+            for (int j = 0; j<m; j++)
+            {
+                if (matrix[i,j]==0)
+                {
+                    cnt++;
+                    break;
+                }
+            }
+        }
+        int[] rows = new int[n];
+        cnt = n;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    rows[i] = 1;
+                    cnt--;
+                    break;
+                }
+            }
+        }
+        int[,] mat = new int[cnt, m];
+        cnt = 0;
+        for (int i =0; i<n; i++)
+        {
+            if (rows[i] == 1)
+            {
+                continue;
+            }
+            for (int j = 0; j < m; j++)
+            {
+                mat[cnt, j] = matrix[i, j];
+            }
+            cnt++;
+        }
         // end
 
-        return matrix;
+        return mat;
     }
     #endregion
 }

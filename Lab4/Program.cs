@@ -11,12 +11,12 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
-        program.Task_3_10(new int[,]{
-            { 1,    2,      -3,     7,      -5,     7,      7 },
-            { 5,    6,      -7,     8,      9,      9,      -11 },
-            { 9,    10,     11,     12,     13,     15,     15 },
-            { -13,  -30,    25,     25,     16,     17,     -19 },
-            { -6,   -5,     -1,     -2,     -3,     -4,     -6 }
+        program.Task_2_1(new double[,]{
+            { 1, 2, -3, 7, -5, 7, 7 },
+            { 5, 6, -7, 8, 9, 9, -11 },
+            { 9, 10, 11, 12, 13, 15, 15 },
+            { -13, -30, 25, 25, 16, 17, -19 },
+            { -6, -5, -1, -2, -3, -4, -6 }
         });
     }
     #region Level 1
@@ -576,7 +576,6 @@ public class Program
     #region Level 2
     public double[,] Task_2_1(double[,] A)
     {
-        // БАГ В ТЕСТЕ
         // code here
         if (A.GetLength(0) != 5 && A.GetLength(1) != 7) return null;
 
@@ -593,34 +592,30 @@ public class Program
                     index = j;
                 }
             }
-
-            double minFoo1 = 9999;
-            int index1 = -1;
-            for (int j = 0; j < 7; j++)
-            {
-                if (j == index) continue;
-                if (A[i, j] < minFoo1)
-                {
-                    minFoo1 = A[i, j];
-                    index1 = j;
-                }
-            }
-
+            
             if (index == 0)
             {
                 if (A[i, index + 1] < 0) A[i, index + 1] /= 2;
                 else A[i, index + 1] *= 2;
+                continue;
             }
-            else if (index == A.Length - 1)
+            if (index == 6)
             {
                 if (A[i, index - 1] < 0) A[i, index - 1] /= 2;
                 else A[i, index - 1] *= 2;
+                continue;
             }
-            else if (index1 != -1)
-            {
-                if (A[i, index1] < 0) A[i, index1] /= 2;
-                else A[i, index1] *= 2;
-            }
+
+                if (A[i, index - 1] < A[i, index + 1])
+                {
+                    if (A[i, index - 1] < 0) A[i, index - 1] /= 2;
+                    else A[i, index - 1] *= 2;
+                }
+                else
+                {
+                    if (A[i, index + 1] < 0) A[i, index + 1] /= 2;
+                    else A[i, index + 1] *= 2;
+                }
         }
         // end
 
@@ -653,7 +648,7 @@ public class Program
             }
 
             if (countFoo > countBar) A[index, i] = 0;
-            else A[index, i] = index;
+            else A[index, i] = index + 1;
         }
         // end
         
@@ -738,7 +733,7 @@ public class Program
             }
 
             if ((A[0, i] + A[4, i]) / 2 > maxFoo) A[index, i] = (A[0, i] + A[A.Length - 1, i]) / 2;
-            else A[index, i] = index;
+            else A[index, i] = index + 1;
         }
         // end
 

@@ -598,17 +598,17 @@ public class Program
                 }
                 if (A[i, j] > 0)
                     count++;
-                else if (A[i, j] == 0)
+                else if (A[i, j] < 0)
                     count0++;
             }
-            if (count > n - count - count0)
+            if (count > count0)
                 A[max_index, j] = 0;
             else
-                A[max_index, j] = max_index;
+                A[max_index, j] = max_index+1;
         }
-
         return A;
-    }
+
+        }
     public int[,] Task_2_3(int[,] A)
     {
         if (A.GetLength(0) != 10 || A.GetLength(1) != 5) return null;
@@ -678,18 +678,19 @@ public class Program
                     ind = i;
                 }
             }
-            double summ = (A[0, 0] + A[A.GetLength(0)-1, j])/2;
+            double summ = (A[0, j] + A[A.GetLength(0)-1, j])/2;
             if (maxx < summ)
             {
                 A[ind,j] = summ;
             }
             else
             {
-                A[ind, j] = ind;
+                A[ind, j] = ind + 1;
             }
         }
 
         return A;
+
     }
     public int[,] Task_2_6(int n)
     {
@@ -859,41 +860,48 @@ public class Program
         int rJ = A.GetLength(1);
         if (rI != rJ) { return default; }
 
-        int l = 0; int u = 0;
 
+        int el = 0;
+        int le = 0;
         for (int i = 0; i < rI; i++)
         {
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < rJ; j++)
             {
-                l++;
+                if (j >= i)
+                {
+                    el++;
+                }
+                else
+                {
+                    le++;
+                }
             }
         }
-        for (int i = 0; i < rI; i++) { 
-            for (int j = i; i < rJ; j++)
-            {
-                u++;
-            } 
-        }
-        lower = new int[l]; upper = new int[u];
-        int k = 0, p = 0;
+        upper = new int[el];
+        lower = new int[le];
+        int k = 0;
+        int k1 = 0;
         for (int i = 0; i < rI; i++)
         {
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < rJ; j++)
             {
-                lower[k] = A[i, j];k++;
-            } }
-
-        for (int i = 0; i < rI; i++) {
-            for (int j = i; i < rJ; j++)
-            {
-                upper[p] = A[i, j]; p++;
+                if (j >= i)
+                {
+                    upper[k++] = A[i, j];
+                    
+                }
+                else
+                {
+                    lower[k1++] = A[i, j];
+                }
             }
         }
 
-        for (int i = 0;i < k; i++) {
+        for (int i = 0;i < k1; i++) {
             Console.Write(lower[i] + " ");
         }
-        for (int i = 0; i < p; i++)
+        Console.WriteLine();
+        for (int i = 0; i < k; i++)
         {
             Console.Write(upper[i] + " ");
         }

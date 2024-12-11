@@ -1589,35 +1589,26 @@ public class Program
         }
         for (int i = 0; i < ii; i++)
         {
-            int[] ch = null;
-            int[] noch = null;
-            if (ii % 2 == 0)
+            for (int j = 0; j <jj; j++)
             {
-                ch = new int[jj / 2];
-                noch = new int[jj / 2];
+                for (int k = 0; k < jj - j - 1; k++)
+                {
+                    if (matrix[i,k] > matrix[i, k + 1])
+                    {
+                        int temp = matrix[i, k];
+                        matrix[i, k] = matrix[i, k + 1];
+                        matrix[i, k + 1] = temp;
+                    }
+                }
             }
-            else
+            if (i %2== 0)
             {
-                ch = new int[(jj / 2) + 1];
-                noch = new int[jj / 2];
-            }
-            for (int j = 0; j < jj; j++)
-            {
-                if (j % 2 == 0)
-                    ch[j / 2] = matrix[i, j];
-                else
-                    noch[j / 2] = matrix[i, j];
-                
-            }
-            Array.Sort(ch);
-            Array.Sort(noch);
-            Array.Reverse(ch);
-            for (int j = 0; j < jj; j++)
-            {
-                if (j % 2 == 0)
-                    matrix[i, j] = ch[j / 2];
-                else
-                    matrix[i, j] = noch[j / 2];
+                for (int j =0; j < jj/2; j++)
+                {
+                    int temp = matrix[i, j];
+                    matrix[i, j] = matrix[i, jj - 1 - j];
+                    matrix[i, jj - 1 - j] = temp;
+                }
             }
         }
         Console.WriteLine("Изменённая матрица:");

@@ -731,7 +731,7 @@ public class Program
                     }
                     if (pos[j] < neg[j])
                     {
-                        A[i, j] = max[j];
+                        A[i, j] = max[j] + 1;
                     }
                 }
 
@@ -864,7 +864,7 @@ public class Program
                 }
                 if (max[j] == i && max[j] >= summa[j])
                 {
-                    A[i, j] = max[j];
+                    A[i, j] = max[j] + 1;
                 }
             }
         }

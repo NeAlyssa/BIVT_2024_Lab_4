@@ -591,9 +591,19 @@ public class Program
             else
             {
                 if(A[i,a_max_index-1]<A[i,a_max_index+1])
-                A[i,a_max_index-1]*=2;
+                {
+                    if(A[i,a_max_index-1]>0)
+                    A[i,a_max_index-1]*=2;
+                    else
+                    A[i,a_max_index-1]*=0.5;
+                }
                 else
-                A[i,a_max_index+1]*=2;
+                {
+                    if(A[i,a_max_index+1]>0)
+                    A[i,a_max_index+1]*=2;
+                    else
+                    A[i,a_max_index+1]*=0.5;
+                }
             }
         }
 
@@ -934,7 +944,8 @@ public class Program
     public int[,] Task_3_2(int[,] matrix)
     {
         int n = matrix.GetLength(0);
-        if (n == 6) 
+        int r = matrix.GetLength(1);
+        if (n!=r)
         return null;
 
         for (int i = 0; i < n; i++)

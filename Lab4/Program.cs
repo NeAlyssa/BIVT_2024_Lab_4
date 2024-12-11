@@ -136,9 +136,9 @@ public class Program
         if (rows != 5 || cols != 7) { return default; }
         for (int i = 0; i < rows; i++)
         {
-            if (A[i, 1] > amax)
+            if (A[i, 2] > amax)
             { 
-                amax= A[i, 1];
+                amax= A[i, 2];
                 imax = i;
             }
         }

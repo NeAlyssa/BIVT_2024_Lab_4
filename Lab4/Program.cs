@@ -52,7 +52,6 @@ public class Program
 
         int[,] sortedMatrix = program.Task_3_11(matrix);
 
-        // Вывод отсортированной матрицы
         for (int i = 0; i < sortedMatrix.GetLength(0); i++)
         {
             for (int j = 0; j < sortedMatrix.GetLength(1); j++)

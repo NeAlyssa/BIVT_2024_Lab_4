@@ -948,7 +948,7 @@ public class Program
     {
         int[] answer = new int[2 * A.GetLength(0) - 1];
         // code here
-        if (A.GetLength(0) != A.GetLength(1))
+        if (A.GetLength(0) != A.GetLength(1)|| A.GetLength(0) <= 0 || A.GetLength(1) <= 0)
         {
             return null;
         }

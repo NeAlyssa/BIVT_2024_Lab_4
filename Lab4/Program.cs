@@ -93,6 +93,20 @@ public class Program
     {
         int answer = 0;
         // code here
+        int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return 0;
+
         for (int i = 0; i < A.GetLength(0); i++)
         {
             for (int j = 0; j < A.GetLength(1); j++)
@@ -124,6 +138,20 @@ public class Program
     {
         int row = 0, col = 0;
         // code here
+        int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return (0,0);
+
         int mn = int.MaxValue;
         for (int i = 0; i < A.GetLength(0); i++)
         {
@@ -162,6 +190,20 @@ public class Program
         int[] answer = default(int[]);
         // code here
         int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return null;
+
+        fl = 0;
         for (int i = 0; i < A.GetLength(0); i++)
             for (int j = 0; j < A.GetLength(1); j++)
                 if (A[i, j] != 0) fl = 1;
@@ -240,6 +282,20 @@ public class Program
     public int[,] Task_1_13(int[,] A)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return null;
+
         int mx = int.MinValue, column_index = 0;
         if (A.GetLength(1) < 4 || A.GetLength(0) != A.GetLength(1)) return null;
         for (int i = 0; i < A.GetLength(0); i++)
@@ -281,6 +337,20 @@ public class Program
     public int[,] Task_1_16(int[,] A, int n, int m)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return null;
+
         for (int i = 0; i < n; i++)
         {
             int mx = A[i, 0], mxindex = 0;
@@ -319,6 +389,20 @@ public class Program
     public double[,] Task_1_19(double[,] C, int n, int m)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < C.GetLength(0); i++)
+        {
+            for (int j = 0; j < C.GetLength(1); j++)
+            {
+                if (C[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (C.GetLength(0) == 0 || C.GetLength(1) == 0 || fl == 0) return null;
+
         for (int i = 0; i < n; i++)
         {
             double mx = C[i, 0];
@@ -360,6 +444,20 @@ public class Program
     public double[,] Task_1_22(double[,] Z)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < Z.GetLength(0); i++)
+        {
+            for (int j = 0; j < Z.GetLength(1); j++)
+            {
+                if (Z[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (Z.GetLength(0) == 0 || Z.GetLength(1) == 0 || fl == 0) return null;
+
         double mx = Z[0, 0];
         int[] mxindex=new int[2];
         double sumpos = 0;
@@ -405,6 +503,21 @@ public class Program
     public int[,] Task_1_25(int[,] X)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < X.GetLength(0); i++)
+        {
+            for (int j = 0; j < X.GetLength(1); j++)
+            {
+                if (X[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (X.GetLength(0) == 0 || X.GetLength(1)==0 || fl==0) return null;
+
+
         int max=0, min= int.MaxValue, index_max = 0, index_min =0;
         for (int i = 0; i < X.GetLength(0); i++)
         {
@@ -455,6 +568,20 @@ public class Program
     public int[,] Task_1_28(int[,] A)
     {
         // code here
+        int fl = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                if (A[i, j] != 0)
+                {
+                    fl = 1;
+                }
+            }
+        }
+
+        if (A.GetLength(0) == 0 || A.GetLength(1) == 0 || fl == 0) return null;
+
         int max_sum = 0, index_max_sum = 0;
         for (int i = 0; i < A.GetLength(0); i++)
         {

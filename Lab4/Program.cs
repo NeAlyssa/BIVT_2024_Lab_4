@@ -733,7 +733,7 @@ public class Program
             if (positiveAmount > negativeAmount)
                 A[maxElementRow, col] = 0;
             else if (positiveAmount < negativeAmount)
-                A[maxElementRow, col] = maxElementRow;
+                A[maxElementRow, col] = maxElementRow + 1;
         }
         // end
 
@@ -848,8 +848,8 @@ public class Program
 
             if (maxElementInCol < edgeElementsHalphSum)
                 A[maxElementInColRow, col] = edgeElementsHalphSum;
-            else if (maxElementInCol > edgeElementsHalphSum)
-                A[maxElementInColRow, col] = maxElementInColRow;
+            else
+                A[maxElementInColRow, col] = maxElementInColRow + 1;
         }
         // end
 
@@ -1100,7 +1100,8 @@ public class Program
         {
             for (int col = 0; col < (rows - row); col++)
             {
-                Console.Write($"{upper[row * cols + col]}\t");
+                int shift = (cols + (rows - row)) / 2 * row;
+                Console.Write($"{upper[shift + col]}\t");
             }
             System.Console.WriteLine();
         }
@@ -1109,7 +1110,8 @@ public class Program
         {
             for (int col = 0; col < row; col++)
             {
-                Console.Write($"{upper[row * cols + col]}\t");
+                int shift = (rows - 1) / 2 * row;
+                Console.Write($"{lower[shift + col]}\t");
             }
             System.Console.WriteLine();
         }

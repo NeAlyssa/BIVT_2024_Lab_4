@@ -21,7 +21,7 @@ public class Program
     {
         int answer = 0;
         // code here
-        if (A.Length == 35)
+        if (A.GetLength(0)==5 && A.GetLength(1)==7)
         {
             for (int i = 0; i < 5; i++)
             {
@@ -63,7 +63,7 @@ public class Program
         int row = 0, col = 0;
         double mn = 100000000;
         // code here
-        if (A.Length != 18) return (0,0);
+        if (A.GetLength(0)!=3 || A.GetLength(1)!=6) return (0,0);
         for(int i = 0; i<3; i++)
         {
             for (int j = 0; j<6; j++)
@@ -103,7 +103,7 @@ public class Program
     {
         int[] answer = default(int[]);
         // code here
-        if (A.Length != 15) return answer;
+        if (A.GetLength(0)!=3  || A.GetLength(1)!=5) return answer;
         answer = new int[5];
         for (int i = 0; i < 5; i++)
         {
@@ -143,7 +143,7 @@ public class Program
         double mx = -10000;
         int index = 0;
         int[,] answer = default(int[,]);
-        if (A.Length != 35) return answer;
+        if (A.GetLength(0)!=5 || A.GetLength(1)!=7) return answer;
         for (int i = 0; i<5; i++)
         {
             if (A[i, 2] > mx)
@@ -191,7 +191,7 @@ public class Program
         double mx = -100000000;
         int[,] answer = default(int[,]);
         // code here
-        if (A.Length != 25) return answer;
+        if (A.GetLength(0)!=5 || A.GetLength(1)!=5) return answer;
         for (int i = 0; i < 3; i++)
         {
             if (A[i, i] >mx)
@@ -321,7 +321,7 @@ public class Program
     {
         double[,] answer = default(double[,]);
         // code here
-        if (Z.Length != 48) return answer;
+        if (Z.GetLength(0)!=6 || Z.GetLength(1)!=8) return answer;
         double mx = 0;
         int index1 = 0;
         int index2 = 0;
@@ -373,7 +373,7 @@ public class Program
         int mn = 100000;
         int i_min = 0;
         int[,] answer = default(int[,]);
-        if (X.Length != 30) return answer;
+        if (X.GetLength(0)!=6 || X.GetLength(1)!=8) return answer;
         for (int i = 0; i < 6; i++)
         {
             int k = 0;
@@ -424,7 +424,7 @@ public class Program
         int mx = 0;
         int index = 0;
         int[,] answer = default(int[,]);
-        if (A.Length != 35) return answer;
+        if (A.GetLength(0) != 7 || A.GetLength(1)!=5) return answer;
         for (int i = 0; i < 7; i++)
         {
             int s = 0;
@@ -480,7 +480,7 @@ public class Program
         int mn = 100000;
         int index = 0;
         int[,] answer = default(int[,]);
-        if (A.Length != 40 || B.Length != 5) return answer;
+        if (A.GetLength(0) != 5|| A.GetLength(1)!=8 || B.Length != 5) return answer;
         for (int i = 0; i<7; i++)
         {
             if (A[4, i] < mn)
@@ -907,9 +907,6 @@ public class Program
             Console.WriteLine(s);
             answer[i] = s;
         }
-        
-
-
         // end
 
         return answer;

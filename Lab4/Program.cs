@@ -1021,10 +1021,43 @@ public class Program
     public int[,] Task_3_11(int[,] matrix)
     {
         // code here
-
+        int row = matrix.GetLength(0);
+        int col = matrix.GetLength(1);
+        int out_row = row;
+        bool flag;
+        int crow = 0;
+        for (int i = 0; i < row; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    out_row--;
+                    break;
+                }
+            }
+        }
+        int[,] outp = new int[out_row, col];
+        for (int i = 0; i < row; i++)
+        {
+            flag = true;
+            for (int j = 0; j < col; j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if (!flag)
+                continue;
+            for (int j = 0; j < col; j++)
+                outp[crow, j] = matrix[i, j];
+            crow++;
+        }
         // end
 
-        return matrix;
+        return outp;
     }
     #endregion
 }

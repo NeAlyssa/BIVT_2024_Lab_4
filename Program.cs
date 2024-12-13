@@ -11,7 +11,6 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
-
     }
     #region Level 1
     public int Task_1_1(int[,] A)
@@ -29,15 +28,15 @@ public class Program
         // code here
         double s = 0;
         int count = 0;
-        if (A.GetLength(0)!= 5 || A.GetLength(1) != 7)
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7)
         {
             return 0;
         }
-        for(int i = 0; i < A.GetLength(0); i++)
+        for (int i = 0; i < A.GetLength(0); i++)
         {
-            for(int j = 0; j < A.GetLength(1); j++)
+            for (int j = 0; j < A.GetLength(1); j++)
             {
-                if (A[i,j] > 0)
+                if (A[i, j] > 0)
                 {
                     s += A[i, j];
                     count++;
@@ -74,16 +73,16 @@ public class Program
         if (A.GetLength(0) != 5 || A.GetLength(1) != 4)
         {
             return (0, 0);
-            
+
         }
         for (int i = 0; i < A.GetLength(0); i++)
         {
-                if (A[i, colIndex] < 0)
-                {
-                    value = A[i, colIndex];
-                    rowIndex = i;
-                    break;
-                }
+            if (A[i, colIndex] < 0)
+            {
+                value = A[i, colIndex];
+                rowIndex = i;
+                break;
+            }
         }
         // end
 
@@ -169,7 +168,7 @@ public class Program
         double count = 0;
         for (int i = 0; i < A.GetLength(0); i++)
         {
-            if (A[i,0] < min)
+            if (A[i, 0] < min)
             {
                 min = A[i, 0];
                 count = i;
@@ -307,7 +306,7 @@ public class Program
     public double[,] Task_1_20(double[,] F, int n, int m)
     {
         // code here
-        if (F.GetLength(0) != n ||  F.GetLength(1) != m)
+        if (F.GetLength(0) != n || F.GetLength(1) != m)
         {
             return null;
         }
@@ -324,7 +323,7 @@ public class Program
                     max = F[i, j];
                     count = j;
                 }
-                if (ch1 == 0 && F[i,j] < 0)
+                if (ch1 == 0 && F[i, j] < 0)
                 {
                     ch1 = F[i, j];
                 }
@@ -333,7 +332,7 @@ public class Program
                     ch2 = F[i, j];
                 }
             }
-            if (ch1 !=0 || ch2 != 0)
+            if (ch1 != 0 || ch2 != 0)
             {
                 F[i, count] = (ch1 + ch2) / 2;
             }
@@ -372,7 +371,7 @@ public class Program
             int max = G[i, 0];
             for (int j = 0; j < G.GetLength(1); j++)
             {
-                if (G[i, j]  > max)
+                if (G[i, j] > max)
                 {
                     count = j;
                     max = G[i, j];
@@ -426,8 +425,8 @@ public class Program
         {
             if (A[i, 5] > 0)
             {
-                 max = A[i, 5];
-                 indexmax = i;
+                max = A[i, 5];
+                indexmax = i;
             }
         }
         for (int j = 0; j < A.GetLength(1); j++)
@@ -599,7 +598,7 @@ public class Program
                     A[i, jmax - 1] /= 2;
                 }
             }
-            else if (A[i,jmax - 1] > A[i, jmax + 1])
+            else if (A[i, jmax - 1] > A[i, jmax + 1])
             {
                 if (A[i, jmax + 1] >= 0)
                 {
@@ -672,7 +671,7 @@ public class Program
     public int[,] Task_2_3(int[,] A)
     {
         // code here
-        if (A.GetLength(0) != 10 ||  A.GetLength(1) != 5)
+        if (A.GetLength(0) != 10 || A.GetLength(1) != 5)
         {
             return null;
         }
@@ -682,9 +681,9 @@ public class Program
             int jmax = 0;
             for (int j = 0; j < A.GetLength(0); j++)
             {
-                if (A[j,i] > max)
+                if (A[j, i] > max)
                 {
-                    max = A[j,i];
+                    max = A[j, i];
                     jmax = j;
                 }
             }
@@ -776,7 +775,7 @@ public class Program
         {
             for (int j = 0; j < answer.GetLength(1); j++)
             {
-                if (j == count || j == n + i || j == 2*n + i)
+                if (j == count || j == n + i || j == 2 * n + i)
                 {
                     answer[i, j] = 1;
                 }
@@ -944,28 +943,22 @@ public class Program
 
         return matrix;
     }
-    public int[] Task_3_3(int[,] A)
+    public int[] Task_3_3(int[,] matrix)
     {
-        int[] answer = new int[2 * A.GetLength(0) - 1];
+        int[] answer = default(int[]);
         // code here
-        if (A.GetLength(0) != A.GetLength(1)|| A.GetLength(0) <= 0 || A.GetLength(1) <= 0)
+        if (matrix.GetLength(0) != matrix.GetLength(1) || matrix.GetLength(0) <= 0) return answer;
+        answer = new int[2 * matrix.GetLength(0) - 1];
+        for (int i = 0; i < 2 * matrix.GetLength(0) - 1; i++)
         {
-            return null;
+            answer[i] = 0;
         }
-        for (int i = A.GetLength(0) - 1, index = 0; i >= 0; i--, index++)
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            int row = i;
-            int col = 0;
-            int sleft = 0;
-            int sright = 0;
-            while (row < A.GetLength(0) && col < A.GetLength(1))
+            for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                sleft += A[row, col];
-                sright += A[col, row];
-                row++; col++;
+                answer[j - i + (matrix.GetLength(0) - 1)] += matrix[i, j];
             }
-            answer[index] = sleft;
-            answer[2 * A.GetLength(0) - 2 - index] = sright;
         }
         // end
 

@@ -114,7 +114,7 @@ public class Program
     {
         double[] answer = default(double[]);
         // code here
-        if (A == null || A.GetLength(0) == 0)
+        if (A.GetLength(0) != 4 || A.GetLength(1) != 6 || A == null || A.GetLength(0) == 0)
             return null;
         int n = A.GetLength(0);
         answer = new double[n];
@@ -156,7 +156,7 @@ public class Program
     public int[,] Task_1_11(int[,] A)
     {
         // code here
-        if (A == null || A.GetLength(0) == 0)
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7 || A == null || A.GetLength(0) == 0)
             return null;
         int mini = -1;
         int min = int.MaxValue;

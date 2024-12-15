@@ -477,8 +477,8 @@ public class Program
         // code here
 
         int rows = A.GetLength(0);
-        int cols = A.GetLength(1);
-        if (rows != 5 || cols != 7 || B.Length != 7) { return default; }
+        int columns = A.GetLength(1);
+        if (rows != 5 || columns != 7 || B.Length != 7) { return default; }
         int max = A[0, 5];
         int iindex = 0;
         for (int i = 0; i < rows; i++)
@@ -491,7 +491,7 @@ public class Program
         }
 
         int k = 0;
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < columns; j++)
         {
             A[iindex, j] = B[k];
             k++;
@@ -505,15 +505,15 @@ public class Program
         // code here
 
         int rows = B.GetLength(0);
-        int cols = B.GetLength(1);
-        if (rows != 5 || cols != 7) { return default; }
+        int columns = B.GetLength(1);
+        if (rows != 5 || columns != 7) { return default; }
 
         int[] m = new int[5];
         int k = 0;
         for (int i = 0; i < rows; i++)
         {
             int max = B[i, 0];
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < columns; j++)
             {
                 if (B[i, j] > max)
                 {
@@ -666,98 +666,52 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
+        if (!(A.GetLength(0) == 5 && A.GetLength(1) == 7)) { return null; }
 
-        int rows = A.GetLength(0);
-        int columns = A.GetLength(1);
-        if (rows != 5 || columns != 7) { return default; }
-        for (int i = 0; i < rows; i++)
+        double maxi;
+        int maxi_index;
+        for (int i = 0; i < 5; i++)
         {
-            double max = A[i, 0];
-            int jmax = 0;
-            for (int j = 0; j < columns; j++)
+            maxi = double.MinValue;
+            maxi_index = -1;
+            for (int j = 0; j < 7; j++)
             {
-                if (A[i, j] > max)
-                {
-                    max = A[i, j];
-                    jmax = j;
-                }
+                if (A[i, j] > maxi) { maxi = A[i, j]; maxi_index = j; }
             }
-            if (jmax != 0 && jmax != columns - 1)
-            {
-                if (A[i, jmax - 1] < A[i, jmax + 1])
-                {
-                    if (A[i, jmax - 1] >= 0)
-                    {
-                        A[i, jmax - 1] = A[i, jmax - 1] * 2;
-                    }
-                    else
-                    {
-                        A[i, jmax - 1] = A[i, jmax - 1] / 2;
-                    }
-                }
-                else
-                {
-                    if (A[i, jmax + 1] >= 0)
-                    {
-                        A[i, jmax + 1] = A[i, jmax + 1] * 2;
-                    }
-                    else
-                    {
-                        A[i, jmax + 1] = A[i, jmax + 1] / 2;
-                    }
-                }
-            }
-            else if (jmax == 0)
-            {
-                A[i, jmax + 1] = A[i, jmax + 1] * 2;
-            }
+            if (maxi_index == 6) { A[i, 5] = change_elem(A[i, 5]); }
+            else if (maxi_index == 0) { A[i, 1] = change_elem(A[i, 1]); }
             else
             {
-                A[i, jmax - 1] = A[i, jmax - 1] * 2;
+                if (A[i, maxi_index + 1] > A[i, maxi_index - 1]) { A[i, maxi_index - 1] = change_elem(A[i, maxi_index - 1]); }
+                else { A[i, maxi_index + 1] = change_elem(A[i, maxi_index + 1]); }
             }
         }
         // end
 
         return A;
     }
-    #endregion
     public int[,] Task_2_2(int[,] A)
     {
         // code here
 
-        int rows = A.GetLength(0);
-        int columns = A.GetLength(1);
-        if (rows != 7 || columns != 5) { return default; }
-        for (int j = 0; j < columns; j++)
+        if (!(A.GetLength(0) == 7 && A.GetLength(1) == 5)) { return null; }
+
+        int count_pos, count_neg, maxi, maxi_index;
+        for (int j = 0; j < 5; j++)
         {
-            int kp = 0;
-            int ko = 0;
-            int max = A[0, j];
-            int imax = 0;
-            for (int i = 0; i < rows; i++)
+            count_neg = 0;
+            count_pos = 0;
+            maxi = int.MinValue;
+            maxi_index = -1;
+            for (int i = 0; i < 7; i++)
             {
-                if (A[i, j] > max)
-                {
-                    max = A[i, j];
-                    imax = i;
-                }
-                if (A[i, j] > 0)
-                {
-                    kp++;
-                }
-                if (A[i, j] < 0)
-                {
-                    ko++;
-                }
+                if (A[i, j] > 0) { count_pos++; }
+                else { count_neg++; }
+
+                if (A[i, j] > maxi) { maxi = A[i, j]; maxi_index = i; }
             }
-            if (kp > ko)
-            {
-                A[imax, j] = 0;
-            }
-            else
-            {
-                A[imax, j] = imax;
-            }
+            if (count_pos > count_neg) { A[maxi_index, j] = 0; }
+            else { A[maxi_index, j] = maxi_index + 1; }
         }
         // end
 
@@ -832,30 +786,23 @@ public class Program
     {
         // code here
 
-        int rows = A.GetLength(0);
-        int columns = A.GetLength(1);
-        if (rows != 7 || columns != 5) { return default; }
-        for (int j = 0; j < columns; j++)
+        if (!(A.GetLength(0) == 7 && A.GetLength(1) == 5)) { return null; }
+        double maxi, polusum;
+        int index_maxi;
+        for (int j = 0; j < 5; j++)
         {
-            double max = A[0, j];
-            int imax = 0;
-            double ps = (A[0, j] + A[rows - 1, j]) / 2;
-            for (int i = 0; i < rows; i++)
+            maxi = int.MinValue;
+            index_maxi = -1;
+            for (int i = 0; i < 7; i++)
             {
-                if (A[i, j] > max)
-                {
-                    max = A[i, j];
-                    imax = i;
-                }
+                if (A[i, j] > maxi) { maxi = A[i, j]; index_maxi = i; }
             }
-            if (max < ps)
+            polusum = (A[0, j] + A[6, j]) / 2.0;
+            if (A[index_maxi, j] < polusum)
             {
-                A[imax, j] = ps;
+                A[index_maxi, j] = polusum;
             }
-            else
-            {
-                A[imax, j] = imax;
-            }
+            else { A[index_maxi, j] = index_maxi + 1; }
         }
         // end
 
@@ -996,6 +943,7 @@ public class Program
 
         return A;
     }
+    #endregion
     #region Level 3
     public int[,] Task_3_1(int[,] matrix)
     {

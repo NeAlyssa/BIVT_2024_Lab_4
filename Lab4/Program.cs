@@ -737,7 +737,7 @@ public class Program
             if (numPositive > numNegative)
                 A[maxIndex, n] = 0;
             else
-                A[maxIndex, n] = maxIndex;           
+                A[maxIndex, n] = maxIndex + 1;           
         }
         Console.WriteLine();
         printIntMatrix(A);
@@ -829,9 +829,9 @@ public class Program
 
             double key = (A[0, n] + A[4, n]) / 2;
             if (max < key)
-                A[maxIndex, n] = key;
+                A[maxIndex, n] = key + 1;
             else
-                A[maxIndex, n] = maxIndex;
+                A[maxIndex, n] = maxIndex + 1;
         }
         // end
 

@@ -301,7 +301,7 @@ public class Program
     public double[,] Task_1_22(double[,] Z)
     {
         // code here
-        if (Z == null || Z.GetLength(0) == 0 || Z.GetLength(1) == 0) return null;
+        if (Z == null || Z.GetLength(0) != 6 || Z.GetLength(1) != 8) return null;
         int maxr = 0;
         int maxc = 0;
         double sump = 0;

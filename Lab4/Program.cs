@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -364,6 +364,21 @@ public class Program
     public int[,] Task_1_31(int[,] A, int[] B)
     {
         // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 8 || B.Length != 5) return null;
+        int m = 0;
+        for (int i = 0; i < A.GetLength(1); i++)
+            if (A[4, i]  < A[4,m]) m = i;
+        m++;
+        for (int i = A.GetLength(1)-1; i > m; i--)
+            for (int j = 0; j < A.GetLength(0); j++) 
+            { 
+                A[j, i] = A[j, i - 1];
+                Console.Write(A[j, i]);
+                Console.Write(' ');
+            }
+
+        for (int i = 0; i < A.GetLength(0); i++)
+            A[i,m] = B[i];
 
         // end
 
@@ -392,7 +407,39 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
-
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7) return null;
+        int m = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+                if (A[i, j] > A[i, m]) m = j;
+            if (m == 0)
+            {
+                if (A[i, 1] > 0)
+                    A[i, 1] *= 2;
+                else A[i, 1] /= 2;
+            }
+            else if (m == A.GetLength(1) - 1) 
+            {
+                if (A[i, A.GetLength(1) - 2] > 0) A[i, A.GetLength(1) - 2] *= 2;
+                else A[i, A.GetLength(1) - 2] /= 2;
+            }
+            else
+            {
+                if (A[i, m - 1] > A[i, m + 1])
+                {
+                    if (A[i, m + 1] > 0)
+                        A[i, m + 1] *= 2;
+                    else A[i, m + 1] /= 2;
+                }
+                else
+                {
+                    if (A[i, m - 1] > 0)
+                        A[i, m - 1] *= 2;
+                    else A[i, m - 1] /= 2;
+                }
+            }
+        }
         // end
 
         return A;
@@ -401,7 +448,22 @@ public class Program
     public int[,] Task_2_2(int[,] A)
     {
         // code here
-
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5) return null;
+        int m = 0, p = 0, n = 0;
+        for (int j = 0; j < A.GetLength(1); j++)
+        {
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                if (A[i, j] > A[m, j]) m = i;
+                if (A[i, j] < 0) n++;
+                if (A[i, j] > 0) p++;
+            }
+            if (p > n) A[m, j] = 0;
+            else A[m, j] = m+1;
+            p = 0;
+            n = 0;
+            m = 0;
+        }
         // end
 
         return A;
@@ -409,7 +471,20 @@ public class Program
     public int[,] Task_2_3(int[,] A)
     {
         // code here
-
+        if (A.GetLength(0) != 10|| A.GetLength(1) != 5) return null;
+        int s = 0, m = 0;
+        for (int j = 0; j < A.GetLength(1); j++)
+        {
+            for (int i = 0;i < A.GetLength(0); i++)
+            {
+                if (A[i, j] > A[m, j]) { m = i; s = 0; }
+                else s += A[i, j];
+            }
+            if (m * 2 < A.GetLength(0))
+                A[0, j] = s;
+            s = 0;
+            m = 0;
+        }
         // end
 
         return A;
@@ -417,7 +492,14 @@ public class Program
     public int[,] Task_2_4(int[,] A, int[] B)
     {
         // code here
-
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5 || B.Length != 5) return null;
+        int m = 0;
+        for(int j = 0; j < A.GetLength(1); j++)
+        {
+            for(int i = 0; i < A.GetLength(0); i++)
+                if (A[i,j] > A[m,j]) m = i;
+            if (A[m,j] < B[j]) A[m,j] = B[j];
+        }
         // end
 
         return A;
@@ -425,24 +507,67 @@ public class Program
     public double[,] Task_2_5(double[,] A)
     {
         // code here
+        if (A.GetLength(0) != 7 || A.GetLength(1) != 5) return null;
+        int m = 0;
+        for (int j = 0; j < A.GetLength(1); j++)
+        {
+            for (int i = 0; i < A.GetLength(0); i++)
+                if (A[i, j] > A[m, j]) m = i;
+            if (A[m, j] * 2 < A[0, j] + A[A.GetLength(0)-1, j])
+                A[m, j] = (A[0, j] + A[A.GetLength(0)-1, j]) / 2;
+            else A[m, j] = m + 1;
+            m = 0;
+        }
 
         // end
 
         return A;
     }
+    static void Print(int[,] A)
+    {
+        
+    }
     public int[,] Task_2_6(int n)
     {
         int[,] answer = default(int[,]);
         // code here
+        if (n < 1) return null;
+        answer = new int[n, 3*n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < 3 * n; j++)
+            {
+                if ((j + i*2) % 3 == 0) answer[i, j] = 1;
+                else answer[i, j] = 0;
+            }
+        }
+
 
         // end
 
         return answer;
     }
+
+
     public int[,] Task_2_7(int[,] A)
     {
         // code here
+        if (A.GetLength(0) != 6 || A.GetLength(1) != 6) return null;
+        int m = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
+            if (A[i, i] > A[m, m]) m = i;
+        for (int i = 0; i < m; i++)
+            for (int j = i+1; j < A.GetLength(0); j++)
+                A[i, j] = 0;
 
+        //for (int i = 0; i < A.GetLength(0); i++)
+        //{
+        //    for (int j = 0; j < A.GetLength(1); j++)
+        //    {
+        //        Console.Write($"{A[i, j]} ");
+        //    }
+        //    Console.WriteLine();
+        //}
         // end
 
         return A;
@@ -450,15 +575,32 @@ public class Program
     public int[,] Task_2_8(int[,] B)
     {
         // code here
+        if (B.GetLength(0) != 6 || B.GetLength(1) != 6) return null;
+        int m = 0, n = 0;
+        for (int i = 0; i < B.GetLength(0); i+=2)
+        {
+            for (int j = 0; j < B.GetLength(1); j++)
+            {
+                if (B[i, j] > B[i, m]) m = j;
+                if (B[i+1, j] > B[i+1, n]) n = j;
+            }
+            (B[i, m], B[i + 1, n]) = (B[i + 1, n], B[i, m]);
+            n = 0;
+            m = 0;
+        }
+        //end
 
-        // end
-
-        return B;
+            return B;
     }
     public int[,] Task_2_9(int[,] A)
     {
         // code here
-
+        if (A.GetLength(0) != 6 || A.GetLength(1) != 7) return null;
+        for (int i = 0;i < A.GetLength(0);i++)
+        {
+            for (int j = 0; j < A.GetLength(1) / 2; j++)
+                (A[i, j], A[i, A.GetLength(1)-1 - j]) = (A[i, A.GetLength(1)-1 - j], A[i, j]);
+        }
         // end
 
         return A;
@@ -468,7 +610,7 @@ public class Program
     public int[,] Task_3_1(int[,] matrix)
     {
         // code here
-
+        
         // end
 
         return matrix;
@@ -476,7 +618,9 @@ public class Program
     public int[,] Task_3_2(int[,] matrix)
     {
         // code here
-
+        if (matrix.GetLength(0) != matrix.GetLength(1)) return null;
+        for (int i = 0; i < matrix.GetLength(0); i++)
+            matrix[0, i] = matrix[i, 0] = matrix[i, matrix.GetLength(0)-1] = matrix[matrix.GetLength(0)-1, i] = 0;
         // end
 
         return matrix;
@@ -493,7 +637,11 @@ public class Program
     public int[,] Task_3_4(int[,] matrix)
     {
         // code here
-
+        if (matrix.GetLength(0) != matrix.GetLength(1)) return null;
+        int n = matrix.GetLength(0);
+        for (int i = n / 2; i < n; i++)
+            for (int j = 0; j <= i; j++)
+                matrix[i, j] = 1;
         // end
 
         return matrix;
@@ -511,10 +659,47 @@ public class Program
         int[] upper = default(int[]);
         int[] lower = default(int[]);
         // code here
-
+        if (matrix.GetLength(0) != matrix.GetLength(1)) return (null,null);
+        int n = matrix.GetLength(0);
+        upper = new int[(n+1)*n/2];
+        lower = new int[upper.Length - n];
+        //for (int i = 0; i < n; i++)
+        //{
+        //    for (int j = i; j < n; j++)
+        //    {
+        //        upper[i + j] = matrix[i, j];
+        //        Console.Write(upper[i + j]);
+        //        Console.Write(' ');
+        //    }
+        //}
+        //Console.WriteLine();
+        //for (int i = 0; i < n; i++)
+        //{
+        //    for (int j = 0; j < i; j++)
+        //    {
+        //        lower[i + j] = matrix[i, j];
+        //        Console.Write(lower[i + j]);
+        //        Console.Write(' ');
+        //    }
+        //}
+        int a = 0, b = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+                if ( j < i)
+                {
+                    lower[b] = matrix[i, j];
+                    b++;
+                }
+                else
+                {
+                    upper[a] = matrix[i, j];
+                    a++;
+                }
+        }
         // end
 
-        return (upper, lower);
+            return (upper, lower);
     }
     public int[] Task_3_7(int[] A, int[] B, int n)
     {
@@ -529,7 +714,29 @@ public class Program
     public int[,] Task_3_8(int[,] matrix)
     {
         // code here
+        if (matrix.GetLength(0) != 7 || matrix.GetLength(1) != 5) return null;
+        int[,] t = new int[matrix.GetLength(0), 2];
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            t[i, 0] = i;
+            t[i, 1] = 0;
+            for (int j = 0; j < matrix.GetLength(1); j++)
+                if (matrix[i, j] > 0)
+                    t[i, 1]++;
+            int f = i;
+            while (f > 0 && t[f, 1] > t[f - 1, 1])
+            {
+                (t[f, 1], t[f - 1, 1]) = (t[f - 1, 1], t[f, 1]);
+                (t[f, 0], t[f - 1, 0]) = (t[f - 1, 0], t[f, 0]);
+                f--;
+            }
 
+        }
+        int[,] a = new int[matrix.GetLength(0), matrix.GetLength(1)];
+        for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int j = 0; j < matrix.GetLength(1); j++)
+                a[i,j] = matrix[t[i, 0], j];
+        matrix = a;
         // end
 
         return matrix;
@@ -545,7 +752,25 @@ public class Program
     public int[,] Task_3_10(int[,] matrix)
     {
         // code here
-
+        if (matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0) return null;
+        for (int i = 0; i < matrix.GetLength(0); i+=2)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                for (int k = 0; k < matrix.GetLength(1) - 1 - j; k++)
+                    if (matrix[i, k] < matrix[i, k + 1])
+                        (matrix[i, k], matrix[i, k + 1]) = (matrix[i, k + 1], matrix[i, k]);
+            }
+        }
+        for (int i = 1; i < matrix.GetLength(0); i += 2)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                for (int k = 0; k < matrix.GetLength(1) - 1 - j; k++)
+                    if (matrix[i, k] > matrix[i, k + 1])
+                        (matrix[i, k], matrix[i, k + 1]) = (matrix[i, k + 1], matrix[i, k]);
+            }
+        }
         // end
 
         return matrix;
@@ -553,6 +778,24 @@ public class Program
     public int[,] Task_3_11(int[,] matrix)
     {
         // code here
+        if (matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0) return null;
+        int[] t = new int[matrix.GetLength(0)];
+        int k = matrix.GetLength(0);
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+                if (matrix[i, j] == 0) { t[i] = 1; k--; break; }
+            
+        }
+        int[,] a = new int[k,matrix.GetLength(1)];
+        for (int i = 0, c = 0; i < matrix.GetLength(0); i++)
+            if (t[i] == 0)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    a[c, j] = matrix[i, j];
+                c++;
+            }
+        matrix = a;
 
         // end
 

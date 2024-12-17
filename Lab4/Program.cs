@@ -1056,26 +1056,48 @@ public class Program
     {
         int[] answer = default(int[]);
 
-        int[] C = new int[n * (n + 1) / 2];
-
-    int GetIndex(int row, int col) => row * (row + 1) / 2 + col;
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = i; j < n; j++)
+        if (n < 1|| A.Length != n * n / 2 + n / 2 + n % 2 || B.Length != n * n / 2 + n / 2 + n % 2)
+            return null;
+        answer = new int[n * n];
+        int[,] AA = new int[n, n];
+        int[,] BB = new int[n, n];
+        int k = 0;
+        for (int i = 0; i < n; i++)
         {
-            int sum = 0;
-            for (int k = 0; k < n; k++)
+            for (int j = i; j < n; j++)
             {
-                int a = (k <= i) ? A[GetIndex(i, k)] : A[GetIndex(k, i)];
-                int b = (k <= j) ? B[GetIndex(j, k)] : B[GetIndex(k, j)];
-                sum += a * b;
+                AA[i, j] = A[k];
+                BB[i, j] = B[k];
+                k++;
             }
-            C[GetIndex(i, j)] = sum;
         }
-    }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (i > j)
+                {
+                    AA[i, j] = AA[j, i];
+                    BB[i, j] = BB[j, i];
+                }
+            }
+        }
+        k = 0;
+        int sm = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                sm = 0;
+                for (int l = 0; l < n; l++)
+                {
+                    sm += AA[i, l] * BB[l, j];
+                }
+                answer[k] = sm;
+                k++;
+            }
+        }
 
-        answer = C;
         return answer;
     }
     public int[,] Task_3_8(int[,] matrix)
@@ -1088,58 +1110,46 @@ public class Program
     }
     public int[,] Task_3_9(int[,] matrix)
     {
-        if(matrix.GetLength(0) != 5 || matrix.GetLength(1) != 7)
-        return null;
-
-        int n = matrix.GetLength(0);
-        int m = matrix.GetLength(1);
-        int[] negCnts = new int[m];
-        
-        
-        for (int j = 0; j < m; j++)
+        if (matrix.GetLength(0) != 5 || matrix.GetLength(1) != 7)
+            return null;
+        int[,] B = new int[7, 2];
+        int k = 0;
+        for (int j = 0; j < 7; j++)
         {
-            for (int i = 0; i < n; i++)
+            k = 0;
+            for (int i = 0; i < 5; i++)
             {
                 if (matrix[i, j] < 0)
+                    k++;
+            }
+            B[j, 0] = k;
+            B[j, 1] = j;
+        }
+        int[,] A = new int[5, 7];
+        int t = 0;
+        for (int i = 1; i < 7; i++)
+        {
+            for (int j = 0; j < 7 - i; j++)
+            {
+                if (B[j, 0] > B[j + 1, 0])
                 {
-                    negCnts[j]++;
+                    t = B[j, 0];
+                    B[j, 0] = B[j + 1, 0];
+                    B[j + 1, 0] = t;
+                    t = B[j, 1];
+                    B[j, 1] = B[j + 1, 1];
+                    B[j + 1, 1] = t;
                 }
             }
         }
-
-        
-        int[] indexs = new int[m];
-
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < 7; j++)
         {
-            indexs[j] = j; 
-        }
-
-        for (int i = 0; i < indexs.Length - 1; i++)
-        {
-            for (int j = i + 1; j < indexs.Length; j++)
+            for (int i = 0; i < 5; i++)
             {
-                if (negCnts[indexs[i]] > negCnts[indexs[j]])
-                {
-                    int tempIndex = indexs[i];
-                    indexs[i] = indexs[j];
-                    indexs[j] = tempIndex;
-                }
+                A[i, j] = matrix[i, B[j, 1]];
             }
         }
-
-        int[,] sortedMatrix = new int[n, m];
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                sortedMatrix[i, j] = matrix[i, indexs[j]];
-            }
-        }
-        matrix = sortedMatrix;
-        // end
-
-        return matrix;
+        return A;
     }
     public int[,] Task_3_10(int[,] matrix)
     {
@@ -1151,11 +1161,42 @@ public class Program
     }
     public int[,] Task_3_11(int[,] matrix)
     {
-        // code here
+        if (matrix.GetLength(0) < 1 || matrix.GetLength(1) < 1)
+            return null;
+        int f = 0;
+        int kol = 0;
+        int[] spi = new int[matrix.GetLength(0)];
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            f = 0;
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    f = 1;
+                    kol++;
+                    break;
+                }
+            }
+            spi[i] = f;
+        }
+        if (matrix.GetLength(0) - kol <= 0)
+            return null;
+        int[,] A = new int[matrix.GetLength(0) - kol, matrix.GetLength(1)];
+        int k = 0;
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            if (spi[i] == 0)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    A[k, j] = matrix[i, j];
+                }
+                k++;
+            }
+        }
 
-        // end
-
-        return matrix;
+        return A;
     }
     #endregion
 }

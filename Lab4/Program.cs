@@ -99,7 +99,7 @@ public class Program
     {
         int[] answer = new int[A.GetLength(1)];
         int k = 0;
-        if (A.GetLength(0) == 0 || A == null)
+        if (A.GetLength(0) != 3 || A.GetLength(1) != 5 || A == null)
         {
             return null;
         }

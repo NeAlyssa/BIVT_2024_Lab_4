@@ -799,7 +799,7 @@ public class Program
     }
     public int[] Task_3_3(int[,] matrix)
     {
-        if (matrix.GetLength(0) < 1 || matrix.GetLength(1) < 1)
+        if (matrix.GetLength(0) < 1 || matrix.GetLength(1) < 1 || matrix.GetLength(1) != matrix.GetLength(0))
             return null;
         int sm = 0;
         int k = 0;

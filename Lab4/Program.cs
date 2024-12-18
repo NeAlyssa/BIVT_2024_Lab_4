@@ -11,6 +11,14 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
+        int[,] mat = { { 1, 2, 3, 4, 5},
+                        {3, 5, 2 ,1 ,3 },
+                        {0, 4, 3 ,2 ,1 },
+                        {3,4 ,3 ,2 ,1},
+                        {0, 2, 2, 20 ,2 }
+        };
+        pr(mat);
+        program.Task_3_11(mat);
 
     }
     #region Level 1
@@ -1111,9 +1119,78 @@ public class Program
 
         
     }
+
+    static void pr(int[,] matrix)
+    {
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                Console.Write(matrix[i, j]);
+                Console.Write(" ");
+            }
+            Console.WriteLine(" ");
+        }
+    }
+    static int[,] Delet(int[,] mat, int row)
+    {
+        int[,] newM = new int[mat.GetLength(0) - 1, mat.GetLength(1)];
+      //  Console.Write(mat.GetLength(0));
+        //Console.Write(" ");
+        //Console.Write(mat.GetLength(1));
+        //Console.WriteLine();
+
+      //  Console.Write(newM.GetLength(0));
+      //  Console.Write(" ");
+       // Console.Write(newM.GetLength(1));
+       // Console.WriteLine();
+       
+        for (int i = 0; i < mat.GetLength(0); i++)
+        {
+            
+            if (i <  row)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    newM[i, j] = mat[i, j];
+                }
+            }
+            if (i > row)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    newM[i-1, j] = mat[i, j];
+                }
+            }
+           // Console.WriteLine("------");
+           // pr(newM);
+
+        }
+       // pr(newM);
+        return newM;
+    }
+
+
     public int[,] Task_3_11(int[,] matrix)
     {
-
+        int row = 0;
+       // pr(matrix);
+        while (row < matrix.GetLength(0))
+        {
+            for (int j = 0; j < matrix.GetLength(0); j++)
+            {
+                //Console.WriteLine(j);
+                if (matrix[row, j]  == 0)
+                {
+                    matrix = Delet(matrix, row);
+                    row -=1;
+                    break;
+                }
+            }
+            row++;
+        }
+        Console.WriteLine("----");
+        pr(matrix);
         return matrix;
     }
     #endregion

@@ -574,7 +574,7 @@ public class Program
             }
             else
             {
-                A[ima, j] = ima;
+                A[ima, j] = ima+1;
             }
         }
         // end
@@ -659,7 +659,7 @@ public class Program
             }
             else
             {
-                A[im, j] = im;
+                A[im, j] = im+1;
             }
         }
         // end

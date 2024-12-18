@@ -605,42 +605,46 @@ public class Program
         // code here
         int n = A.GetLength(0);
         int m = A.GetLength(1);
+
         if (n != 7 || m != 5)
         {
             return null;
         }
 
-        for (int i = 0; i < m; i++)
+        for (int j = 0; j < m; j++)
         {
-            int max = A[0, i];
-            int max_index = 0;
-            int k = 0;
-            int count = 0;
+            int plus_k = 0;
+            int minus_k = 0;
+            int max = -10000;
+            int i_index = -1;
+            int j_index = -1;
 
-            for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i++)
             {
-                if (max < A[j, i])
+                if (A[i, j] < 0)
                 {
-                    max = A[j, i];
-                    max_index = j;
+                    minus_k++;
                 }
-                if (A[j, i] > 0)
+                if (A[i, j] > 0)
                 {
-                    count++;
+                    plus_k++;
                 }
-                else if (A[j, i] == 0)
+                if (A[i, j] > max)
                 {
-                    k++;
+                    max = A[i, j];
+                    i_index = i;
+
                 }
             }
-            if (count > (n - count - k))
+            if (plus_k > minus_k)
             {
-                A[max_index, i] = 0;
+                A[i_index, j] = 0;
             }
             else
             {
-                A[max_index, i] = max_index;
+                A[i_index, j] = i_index + 1;
             }
+
         }
 
         // end
@@ -720,34 +724,32 @@ public class Program
         // code here
         int n = A.GetLength(0);
         int m = A.GetLength(1);
+
         if (n != 7 || m != 5)
         {
             return null;
         }
-
-        double sum = 0;
-        for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
         {
-            sum += A[i, 0] + A[i, m - 1];
-        }
-        sum = sum / 2;
-        for (int i = 0; i < m; i++)
-        {
-            int max_index = 0;
-            double max = A[0, i];
-
-            for (int j = 0; j < n; j++)
+            int index = 0;
+            double max = -10000;
+            
+            for (int i = 0; i < n; i++)
             {
-                if (max < A[j, i])
+                if (max < A[i, j])
                 {
-                    max = A[j, i];
-                    max_index = j;
+                    max = A[i, j];
+                    index = i;
                 }
             }
-            if (max < sum)
-                A[max_index, i] = sum;
+            if (A[index, j] < (A[0, j] + A[n - 1, j]) / 2)
+            {
+                A[index, j] = (A[0, j] + A[n - 1, j]) / 2;
+            }
             else
-                A[max_index, i] = max_index;
+            {
+                A[index, j] = index + 1;
+            }
         }
         // end
 
@@ -761,21 +763,21 @@ public class Program
         {
             return null;
         }
+
         answer = new int[n, 3 * n];
+
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < 3 * n; j++)
             {
-                if ((j - 1) % n == 0)
+                if ((j - i) % n == 0)
                 {
                     answer[i, j] = 1;
                 }
-                    
                 else
                 {
                     answer[i, j] = 0;
                 }
-                    
             }
         }
         // end
@@ -885,14 +887,13 @@ public class Program
         if (matrix.GetLength(0) != 7 || matrix.GetLength(1) != 5)
         {
             return null;
-        }
-
+        } 
         int[,] min_num = new int[matrix.GetLength(0), 2];
         int[,] A = new int[7, 5];
 
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            int min = 100000;
+            int min = 10000;
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
                 if (min > matrix[i, j])
@@ -903,6 +904,32 @@ public class Program
                 }
             }
         }
+        
+        for (int i = 0; i < min_num.GetLength(0); i++)
+        {
+            for (int j = 0; j < min_num.GetLength(0) - i - 1; j++)
+            {
+                if (min_num[j, 1] < min_num[j + 1, 1])
+                {
+                    int t1 = min_num[j, 0];
+                    int t2 = min_num[j, 1];
+                    min_num[j, 0] = min_num[j + 1, 0];
+                    min_num[j, 1] = min_num[j + 1, 1];
+                    min_num[j + 1, 0] = t1;
+                    min_num[j + 1, 1] = t2;
+                }
+            }
+        }
+        for (int i = 0; i < A.GetLength(0); i++)
+        {
+            for (int j = 0; j < A.GetLength(1); j++)
+            {
+                A[i, j] = matrix[min_num[i, 0], j];
+            }
+        }
+        Console.WriteLine();
+
+        matrix = A;
         // end
 
         return matrix;

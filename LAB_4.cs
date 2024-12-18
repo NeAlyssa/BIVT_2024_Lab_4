@@ -666,24 +666,38 @@ public class Program
     public double[,] Task_2_1(double[,] A)
     {
         // code here
-        if (!(A.GetLength(0) == 5 && A.GetLength(1) == 7)) { return null; }
 
-        double maxi;
-        int maxi_index;
-        for (int i = 0; i < 5; i++)
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7) return null;
+        int m = 0;
+        for (int i = 0; i < A.GetLength(0); i++)
         {
-            maxi = double.MinValue;
-            maxi_index = -1;
-            for (int j = 0; j < 7; j++)
+            for (int j = 0; j < A.GetLength(1); j++)
+                if (A[i, j] > A[i, m]) m = j;
+            if (m == 0)
             {
-                if (A[i, j] > maxi) { maxi = A[i, j]; maxi_index = j; }
+                if (A[i, 1] > 0)
+                    A[i, 1] *= 2;
+                else A[i, 1] /= 2;
             }
-            if (maxi_index == 6) { A[i, 5] = change_elem(A[i, 5]); }
-            else if (maxi_index == 0) { A[i, 1] = change_elem(A[i, 1]); }
+            else if (m == A.GetLength(1) - 1)
+            {
+                if (A[i, A.GetLength(1) - 2] > 0) A[i, A.GetLength(1) - 2] *= 2;
+                else A[i, A.GetLength(1) - 2] /= 2;
+            }
             else
             {
-                if (A[i, maxi_index + 1] > A[i, maxi_index - 1]) { A[i, maxi_index - 1] = change_elem(A[i, maxi_index - 1]); }
-                else { A[i, maxi_index + 1] = change_elem(A[i, maxi_index + 1]); }
+                if (A[i, m - 1] > A[i, m + 1])
+                {
+                    if (A[i, m + 1] > 0)
+                        A[i, m + 1] *= 2;
+                    else A[i, m + 1] /= 2;
+                }
+                else
+                {
+                    if (A[i, m - 1] > 0)
+                        A[i, m - 1] *= 2;
+                    else A[i, m - 1] /= 2;
+                }
             }
         }
         // end
@@ -692,30 +706,42 @@ public class Program
     }
     public int[,] Task_2_2(int[,] A)
     {
-        // code here
-
-        if (!(A.GetLength(0) == 7 && A.GetLength(1) == 5)) { return null; }
-
-        int count_pos, count_neg, maxi, maxi_index;
-        for (int j = 0; j < 5; j++)
+        int rows = A.GetLength(0);
+        int columns = A.GetLength(1);
+        if (rows == 7 && columns == 5)
         {
-            count_neg = 0;
-            count_pos = 0;
-            maxi = int.MinValue;
-            maxi_index = -1;
-            for (int i = 0; i < 7; i++)
+            for (int j = 0; j < columns; j++) 
             {
-                if (A[i, j] > 0) { count_pos++; }
-                else { count_neg++; }
+                int max = int.MinValue; 
+                int index_max = -1;    
+                int count_pos = 0;      
+                int count_neg = 0;      
 
-                if (A[i, j] > maxi) { maxi = A[i, j]; maxi_index = i; }
+                for (int i = 0; i < rows; i++) 
+                {
+                    if (A[i, j] > 0) count_pos++; 
+                    if (A[i, j] < 0) count_neg++; 
+                    if (A[i, j] > max)
+                    {
+                        max = A[i, j];
+                        index_max = i;
+                    }
+                }
+                if (count_pos > count_neg)
+                {
+                    A[index_max, j] = 0; 
+                }
+                else
+                {
+                    A[index_max, j] = index_max + 1; 
+                }
             }
-            if (count_pos > count_neg) { A[maxi_index, j] = 0; }
-            else { A[maxi_index, j] = maxi_index + 1; }
         }
-        // end
-
-        return A;
+        else
+        {
+            A = null; 
+        }
+        return A; 
     }
     public int[,] Task_2_3(int[,] A)
     {

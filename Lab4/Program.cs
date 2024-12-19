@@ -11,6 +11,16 @@ public class Program
     public static void Main()
     {
         Program program = new Program();
+        int[,] matrix = {
+                { 1, 2, -3, 7, 7 },
+                { 5, 6, -7, 9, -11 },
+                { 9, 10, 11, 15, 15 },
+                { -13, 14, 25, 25, -19 },
+                { 5, 6, -7, 8, 9},
+                { -13, 14, 25, 25, -19 },
+                { 0, 0, -1, -2, -3 }
+            };
+        int[,] output = program.Task_2_6(4);
     }
     #region Level 1
     public int Task_1_1(int[,] A)
@@ -517,72 +527,223 @@ public class Program
 
         return A;
     }
-    #endregion
+    public double Increase(int a)
+    {
+        if(a < 0) { return a / 2; }
+        return a * 2;
+    }
+    
     public int[,] Task_2_2(int[,] A)
     {
-        // code here
+        if (A.Length != 35 || A.GetLength(0) != 7) return null;
+        for (int j = 0; j < 5; j++)
+        {
+            int positiveCount = 0;
+            int negativeCount = 0;
+            int maxElementIndex = 0;
 
-        // end
+            for (int i = 0; i < 7; i++)
+            {
+                if (A[i, j] > 0)
+                {
+                    positiveCount++;
+                }
+                else if (A[i, j] < 0)
+                {
+                    negativeCount++;
+                }
 
+                if (A[i, j] > A[maxElementIndex, j])
+                {
+                    maxElementIndex = i;
+                }
+            }
+
+            if (positiveCount > negativeCount)
+            {
+                A[maxElementIndex, j] = 0;
+            }
+            else
+            {
+                A[maxElementIndex, j] = maxElementIndex + 1;
+            }
+        }
         return A;
     }
     public int[,] Task_2_3(int[,] A)
     {
-        // code here
+        if (A.Length != 50 || A.GetLength(0) != 10) return null;
+        for (int j = 0; j < 5; j++)
+        {
+            int maxElementIndex = 0;
+            int maxElementValue = A[0, j];
 
-        // end
+            for (int i = 1; i < 10; i++)
+            {
+                if (A[i, j] > maxElementValue)
+                {
+                    maxElementValue = A[i, j];
+                    maxElementIndex = i;
+                }
+            }
+
+            if (maxElementIndex < 5)
+            {
+                int sum = 0;
+                for (int i = maxElementIndex + 1; i < 10; i++)
+                {
+                    sum += A[i, j];
+                }
+                A[0, j] = sum;
+            }
+        }
 
         return A;
     }
     public int[,] Task_2_4(int[,] A, int[] B)
     {
-        // code here
+        if (A.Length != 35 || A.GetLength(0) != 7 || B.Length != 5) return null;
+        for (int j = 0; j < 5; j++)
+        {
+            int maxElementIndex = 0;
+            int maxElementValue = A[0, j];
 
-        // end
+            for (int i = 1; i < 7; i++)
+            {
+                if (A[i, j] > maxElementValue)
+                {
+                    maxElementValue = A[i, j];
+                    maxElementIndex = i;
+                }
+            }
+
+            if (B[j] > maxElementValue)
+            {
+                A[maxElementIndex, j] = B[j];
+            }
+        }
 
         return A;
     }
     public double[,] Task_2_5(double[,] A)
     {
-        // code here
+        if (A.Length != 35 || A.GetLength(0) != 7) return null;
+        for (int j = 0; j < 5; j++)
+        {
+            int maxElementIndex = 0;
 
-        // end
+            for (int i = 1; i < 7; i++)
+            {
+                if (A[i, j] > A[maxElementIndex, j])
+                {
+                    maxElementIndex = i;
+                }
+            }
 
+            double firstElement = A[0, j];
+            double lastElement = A[6, j];
+            double halfSum = (firstElement + lastElement) / 2;
+
+            if (A[maxElementIndex, j] < halfSum)
+            {
+                A[maxElementIndex, j] = halfSum;
+            }
+            else
+            {
+                A[maxElementIndex, j] = maxElementIndex + 1;
+            }
+        }
         return A;
     }
     public int[,] Task_2_6(int n)
     {
-        int[,] answer = default(int[,]);
-        // code here
+        if (n <= 0) return null;
 
-        // end
+        int[,] answer = new int[n, 3 * n];
+
+        for (int i = 0; i < n; i ++)
+        {
+            answer[i, i] = 1;
+            answer[i, i + n] = 1;
+            answer[i, i + n + n] = 1;
+        }
 
         return answer;
     }
     public int[,] Task_2_7(int[,] A)
     {
-        // code here
+        if (A.Length != 36 || A.GetLength(0) != 6) return null;
+        
+        int maxElement = A[0, 0];
+        int maxElementRow = 0;
 
-        // end
+        for (int i = 0; i < 6; i++)
+        {
+            if (A[i, i] > maxElement)
+            {
+                maxElement = A[i, i];
+                maxElementRow = i;
+            }
+        }
+
+        for (int i = 0; i < maxElementRow; i++)
+        {
+            for (int j = i + 1; j < 6; j++)
+            {
+                A[i, j] = 0;
+            }
+        }
 
         return A;
     }
     public int[,] Task_2_8(int[,] B)
     {
-        // code here
+        if (B.Length != 36 || B.GetLength(0) != 6) return null;
 
-        // end
+        int[] maxIndices = new int[6];
+
+        for (int i = 0; i < 6; i++)
+        {
+            int maxElement = B[i, 0];
+            int maxIndex = 0;
+
+            for (int j = 1; j < 6; j++)
+            {
+                if (B[i, j] > maxElement)
+                {
+                    maxElement = B[i, j];
+                    maxIndex = j;
+                }
+            }
+            
+            maxIndices[i] = maxIndex;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            int temp = B[i * 2, maxIndices[i * 2]];
+            B[i * 2, maxIndices[i * 2]] = B[i * 2 + 1, maxIndices[i * 2 + 1]];
+            B[i * 2 + 1, maxIndices[i * 2 + 1]] = temp;
+        }
 
         return B;
     }
     public int[,] Task_2_9(int[,] A)
     {
-        // code here
-
-        // end
+        if (A.Length != 42 || A.GetLength(0) != 6) return null;
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int temp = A[i, j];
+                A[i, j] = A[i, 6 - j];
+                A[i, 6 - j] = temp;
+            }
+        }
 
         return A;
     }
+    #endregion
 
     #region Level 3
     public int[,] Task_3_1(int[,] matrix)

@@ -748,9 +748,39 @@ public class Program
     #region Level 3
     public int[,] Task_3_1(int[,] matrix)
     {
-        // code here
+        if (matrix.Length != 35 || matrix.GetLength(0) != 7) return null;
 
-        // end
+        int[] mini = new int[7];
+        for (int i = 0; i < 7; i++)
+        {
+            mini[i] = 0;
+            for (int j = 1; j < 5; j++)
+            {
+                if (matrix[i, j] < matrix[i, mini[i]])
+                {
+                    mini[i] = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6 - i; j++)
+            {
+                if (matrix[j, mini[j]] < matrix[j + 1, mini[j + 1]])
+                {
+                    for (int k = 0; k < 5; k++)
+                    {
+                        int temp = matrix[j, k];
+                        matrix[j, k] = matrix[j + 1, k];
+                        matrix[j + 1, k] = temp;
+                    }
+                    int tempIndex = mini[j];
+                    mini[j] = mini[j + 1];
+                    mini[j + 1] = tempIndex;
+                }
+            }
+        }
 
         return matrix;
     }
@@ -764,12 +794,22 @@ public class Program
     }
     public int[] Task_3_3(int[,] matrix)
     {
-        int[] answer = default(int[]);
-        // code here
+        if (matrix.Length == 0 || matrix.GetLength(0) != matrix.Length / matrix.GetLength(0)) { return null; }
 
-        // end
+        int n = matrix.GetLength(0);
 
-        return answer;
+        int[] sums = new int[2 * n - 1];
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int diagonalIndex = j - i + (n - 1);
+                sums[diagonalIndex] += matrix[i, j];
+            }
+        }
+
+        return sums;
     }
     public int[,] Task_3_4(int[,] matrix)
     {
@@ -781,9 +821,42 @@ public class Program
     }
     public int[,] Task_3_5(int[,] matrix, int k)
     {
-        // code here
+        if (matrix.Length == 0 || matrix.GetLength(0) != matrix.Length / matrix.GetLength(0) || k > matrix.GetLength(0) || k < 1) { return null; }
+        int maxAbsValue = int.MinValue;
+        int maxRow = -1;
+        int maxCol = -1;
+        int n = matrix.GetLength(0);
 
-        // end
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (Math.Abs(matrix[i, j]) > maxAbsValue)
+                {
+                    maxAbsValue = Math.Abs(matrix[i, j]);
+                    maxRow = i;
+                    maxCol = j;
+                }
+            }
+        }
+        if (maxRow != k - 1)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int temp = matrix[k - 1, j];
+                matrix[k - 1, j] = matrix[maxRow, j];
+                matrix[maxRow, j] = temp;
+            }
+        }
+        if (maxCol != k - 1)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                int temp = matrix[i, k - 1];
+                matrix[i, k - 1] = matrix[i, maxCol];
+                matrix[i, maxCol] = temp;
+            }
+        }
 
         return matrix;
     }
@@ -817,9 +890,39 @@ public class Program
     }
     public int[,] Task_3_9(int[,] matrix)
     {
-        // code here
+        if (matrix.Length != 35 || matrix.GetLength(0) != 5) return null;
 
-        // end
+        int[] negativeCounts = new int[7];
+
+        for (int j = 0; j < 7; j++)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (matrix[i, j] < 0)
+                {
+                    negativeCounts[j]++;
+                }
+            }
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6 - i; j++)
+            {
+                if (negativeCounts[j] > negativeCounts[j + 1])
+                {
+                    for (int k = 0; k < 5; k++)
+                    {
+                        int temp = matrix[k, j];
+                        matrix[k, j] = matrix[k, j + 1];
+                        matrix[k, j + 1] = temp;
+                    }
+                    int tempCount = negativeCounts[j];
+                    negativeCounts[j] = negativeCounts[j + 1];
+                    negativeCounts[j + 1] = tempCount;
+                }
+            }
+        }
 
         return matrix;
     }
@@ -833,11 +936,37 @@ public class Program
     }
     public int[,] Task_3_11(int[,] matrix)
     {
-        // code here
+        if (matrix.Length == 0) return null;
 
-        // end
+        int n = matrix.GetLength(0);
+        int m = matrix.Length / matrix.GetLength(0);
+        bool[] withoutzero = new bool[n];
+        int numwz = 0;
+        for (int i = 0; i < n; i++)
+        {
+            withoutzero[i] = true;
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i, j] == 0) withoutzero[i] = false;
+            }
+            if (withoutzero[i]) numwz++;
+        }
+        if (numwz == 0) return null;
+        int[,] newmatrix = new int[numwz, m];
+        int cur = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (withoutzero[i])
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    newmatrix[cur, j] = matrix[i, j];
+                }
+                cur++;
+            }
+        }
 
-        return matrix;
+        return newmatrix;
     }
     #endregion
 }

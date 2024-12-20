@@ -369,7 +369,7 @@ public class Program
         for (int i = 0; i < D.GetLength(0); i++)
         {
             int max = D[i, 0];
-            int j_max = 0;
+            int j_max = -1;
             int first = -1;
             for (int j = 0; j < D.GetLength(1); j++)
             {
@@ -379,15 +379,13 @@ public class Program
 
             for (int j = 0; j < first; j++)
             {
-                if (D[i, j] > max) { max = D[i, j]; j_max = j; }
+                if (D[i, j] >= max) { max = D[i, j]; j_max = j; }
             }
-            int temp = D[i, j_max];
-            D[i, j_max] = D[i, first];
-            D[i,first] = temp;
-            /*for (int j = D.GetLength(1) - 1; j >= 0; j--)
+            if (j_max == -1) continue;
+            for (int j = D.GetLength(1) - 1; j >= 0; j--)
             {
                 if (D[i, j] < 0) { int temp = D[i, j_max]; D[i, j_max] = D[i, j]; D[i, j] = temp; break; }
-            }*/
+            }
         }
             // end
 
@@ -724,7 +722,7 @@ public class Program
                     if (A[i, j] > 0) c_positive++;
                     if (A[i, j] < 0) c_negative++;
                 }
-                if (c_positive > c_negative) A[i_max, j] = 0; else A[i_max, j] = i_max;
+                if (c_positive > c_negative) A[i_max, j] = 0; else A[i_max, j] = i_max+1;
             }
             // end
 
@@ -786,7 +784,7 @@ public class Program
                 }
                 double half_sum_of_f_and_l = 0.5 * (A[0, j] + A[A.GetLength(0) - 1, j]);
                 if (A[i_max, j] < half_sum_of_f_and_l) A[i_max, j] = half_sum_of_f_and_l;
-                else A[i_max, j] = i_max;
+                else A[i_max, j] = i_max+1;
 
             }
             // end

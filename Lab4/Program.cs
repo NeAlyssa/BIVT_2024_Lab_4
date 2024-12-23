@@ -695,7 +695,7 @@ public class Program
             if (countPos > countNeg) {
                     A[maxInd, j] = 0;
             } else {
-                A[maxInd, j] = maxInd;
+                A[maxInd, j] = maxInd+1;
             }
         }
         // end
@@ -798,7 +798,7 @@ public class Program
             if (A[maxInd, j] < sum) {
                 A[maxInd, j] = sum;
             } else {
-                A[maxInd, j] = maxInd;
+                A[maxInd, j] = maxInd+1;
             }
         }
         // end

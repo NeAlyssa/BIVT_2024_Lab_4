@@ -18,7 +18,7 @@ public class Program
                         {0, 2, 2, 20 ,2 }
         };
         pr(mat);
-        program.Task_3_11(mat);
+      //  program.Task_3_11(mat);
 
     }
     #region Level 1
@@ -1147,7 +1147,7 @@ public class Program
        
         for (int i = 0; i < mat.GetLength(0); i++)
         {
-            
+           // Console.WriteLine(mat.GetLength(0));
             if (i <  row)
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
@@ -1166,7 +1166,7 @@ public class Program
            // pr(newM);
 
         }
-       // pr(newM);
+        //pr(newM);
         return newM;
     }
 
@@ -1174,14 +1174,18 @@ public class Program
     public int[,] Task_3_11(int[,] matrix)
     {
         int row = 0;
+        // pr(matrix);
+       // Console.WriteLine(matrix.GetLength(0));
        // pr(matrix);
         while (row < matrix.GetLength(0))
         {
-            for (int j = 0; j < matrix.GetLength(0); j++)
+            
+            for (int j = 0; j < matrix.GetLength(1); j++)
             {
-                //Console.WriteLine(j);
+                
                 if (matrix[row, j]  == 0)
                 {
+                   // Console.WriteLine(row);
                     matrix = Delet(matrix, row);
                     row -=1;
                     break;
@@ -1189,7 +1193,7 @@ public class Program
             }
             row++;
         }
-        Console.WriteLine("----");
+        //Console.WriteLine("----");
         pr(matrix);
         return matrix;
     }

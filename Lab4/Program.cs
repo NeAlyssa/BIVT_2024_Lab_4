@@ -1146,7 +1146,6 @@ public class Program
 
         int countZeroRows = 0;
 
-        // Считаем количество строк, содержащих нулевые элементы
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             bool hasZero = false;
@@ -1165,7 +1164,7 @@ public class Program
         int[,] resultMatrix = new int[5 - countZeroRows, 7];
         int rowIndex = 0;
 
-        // Копируем строки, не содержащие нулевых элементов
+
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             bool hasZero = false;

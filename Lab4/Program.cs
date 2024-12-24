@@ -803,7 +803,7 @@ public class Program
         // code here
         int n = matrix.GetLength(0);
         answer = new int[2 * n - 1];
-        if (matrix.GetLength(0) != matrix.GetLength(1)) return default;
+       if ((matrix.GetLength(0) != matrix.GetLength(1)) || matrix.GetLength(1) == 0 || matrix.GetLength(0) == 0) return default;
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)

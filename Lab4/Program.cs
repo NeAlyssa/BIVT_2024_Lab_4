@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
+using System.Xml.Schema;
 
 public class Program
 {
@@ -519,18 +520,54 @@ public class Program
     #endregion
 
     #region Level 2
+    public double IncreaseDouble(double x)
+    {
+        if (x > 0)
+        {
+            return x * 2;
+        } else
+        {
+            return x / 2;
+        }
+    }
     public double[,] Task_2_1(double[,] A)
     {
-        // code here
+        if (A.GetLength(0) != 5 || A.GetLength(1) != 7) return null;
 
-        // end
+        for (int i = 0; i < 5; i++)
+        {
+            int curmax = 0;
+            double maxi = A[i, 0];
+
+            for (int j = 0; j < 7; j++)
+            {
+                if (A[i, j] > maxi)
+                {
+                    maxi = A[i, j];
+                    curmax = j;
+                }
+            }
+
+            if (curmax == 0)
+            {
+                A[i, 1] = IncreaseDouble(A[i, 1]);
+            }
+            if (curmax == 6)
+            {
+                A[i, 5] = IncreaseDouble(A[i, 5]);
+            }
+            if (curmax > 0 && curmax < 6)
+            {
+                int mini = curmax - 1;
+                if (A[i, curmax + 1] < A[i, mini])
+                {
+                    mini = curmax + 1;
+                }
+                A[i, mini] = IncreaseDouble(A[i, mini]);
+            }
+        }
 
         return A;
-    }
-    public double Increase(int a)
-    {
-        if(a < 0) { return a / 2; }
-        return a * 2;
     }
     
     public int[,] Task_2_2(int[,] A)
@@ -872,11 +909,61 @@ public class Program
     }
     public int[] Task_3_7(int[] A, int[] B, int n)
     {
-        int[] answer = default(int[]);
+        int[] answer = new int[n * n]; ;
 
-        // code here
+        bool NZA = false, NZB = false;
+        for (int i = 0; i < A.Length; i++)
+        {
+            if (A[i] != 0) NZA = true;
+            if (B[i] != 0) NZB = true;
+            if (NZA && NZB) break;
+        }
 
-        // end
+        if (!(NZA && NZB)) return null;
+
+        int counter = 0;
+
+        int[,] resA = new int[n, n], resB = new int[n, n], resM = new int[n, n];
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                resA[i, j] = A[counter]; 
+                resB[i, j] = B[counter];
+                if (j > i)
+                {
+                    resA[j, i] = A[counter];
+                }
+                if (j > i)
+                {
+                    resB[j, i] = B[counter];
+                }
+                counter++;
+            }
+        }
+
+        counter = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                for (int k = 0; k < n; k++)
+                {
+                    resM[i, k] += resA[i, j] * resB[j, k];
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                answer[counter] = resM[i, j];
+                counter++;
+            }
+        }
 
         return answer;
     }

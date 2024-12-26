@@ -890,13 +890,48 @@ public class Program
 
         return matrix;
     }
-    public int[,] Task_3_11(int[,] matrix)
+    public int[,] Task_3_11(int[,] matrix) // dotnet test --filter Tests.ProgramTests.Task_3_11Test
     {
         // code here
+        if (matrix.Length == 0) return null;
 
+        int rowCount = matrix.GetLength(0);
+        int columnCount = matrix.Length / rowCount;
+        bool[] hasNoZero = new bool[rowCount];
+        int validRowCount = 0;
+
+        for (int row=0; row < rowCount; row++) {
+            hasNoZero[row] = true;
+            for (int col=0; col < columnCount; col++) {
+                if (matrix[row, col] == 0) hasNoZero[row] = false;
+            }
+            if (hasNoZero[row]) validRowCount++;
+        }
+        if (validRowCount==0) return null;
+
+        int[,] filteredMatrix = new int[validRowCount, columnCount];
+        int currentRow = 0;
+
+        for (int row=0; row<rowCount; row++) {
+            if (hasNoZero[row]) {
+                for (int col=0; col<columnCount; col++) {
+                    filteredMatrix[currentRow, col] = matrix[row, col];
+                }
+                currentRow++;
+            }
+        }
+        for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write(matrix[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        
         // end
 
-        return matrix;
+        return filteredMatrix;
     }
     #endregion
 }
